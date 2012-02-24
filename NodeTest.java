@@ -10,7 +10,7 @@ public class NodeTest
 
   public static void main(String[] args)
   {
-    String tmp = args[0];
+    String tmp = args.length > 0 ? args[0] : "";
     if(tmp.toLowerCase().equals("unittest"))
     {
       if(args.length >= 2)
@@ -130,7 +130,7 @@ public class NodeTest
     {
       System.out.println("\n,.~*TESTING PacketReceiver!*~.,\n");
       PacketReceiver prec = new PacketReceiver();
-      Packet pkt = new Packet('a', "yup", (double)0, new Date((long)0));
+      Packet pkt = new Packet('a', 0, (double)0, new Date((long)0));
       prec.receivePacket(pkt);
       Packet pkt2 = prec.getPacket();
       assertTest(pkt2 == pkt, "receive");
@@ -141,7 +141,7 @@ public class NodeTest
     {
       System.out.println("\n,.~*TESTING PacketTransmitter!*~.,\n");
       PacketTransmitter ptra = new PacketTransmitter();
-      Packet pkt = new Packet('a', "yup", (double)0, new Date((long)0));
+      Packet pkt = new Packet('a', 0, (double)0, new Date((long)0));
 
       ArrayList<Node> nods = new ArrayList<Node>();
       nods.add(new Node(0, 0, 0, 10, 2));
@@ -153,6 +153,8 @@ public class NodeTest
 
       ptra.setNeighbors(nods.get(0).getNeighbours());
       ptra.addPacket(pkt);
+      // make sure the packet gets to the destination
+      nods.get(1).receivePacket(pkt);
       assertTest(nods.get(1).lastReceivedPacketTest() == pkt, "received packet");
     }
 

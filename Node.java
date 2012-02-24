@@ -11,7 +11,7 @@ public class Node
   PacketReceiver pktRecv = new PacketReceiver();
   RnFDataSend rnfSend = new RnFDataSend();
   ExpDataSend expSend = new ExpDataSend();
-  ArrayList<Gradient> gradients = new ArrayList<Gradient>();
+  ArrayList<DataInterest> interests = new ArrayList<DataInterest>();
 
   boolean TESTING = false;
 
@@ -92,7 +92,7 @@ public class Node
   {
     //just some values for now TODO: change them to make sense.
     char packetType = 'a';
-    String senderID = "senderIDtest";
+	int senderID = nodeID;
     double seqNumber = 1337;
     Date interval = new Date(1337);
 
