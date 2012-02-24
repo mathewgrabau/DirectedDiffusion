@@ -3,11 +3,11 @@ import java.sql.Date;
 public class Packet
 {
   private char packetType;
-  private String senderID;
+  private int senderID;
   private double seqNumber;
   private Date interval;
 
-  public Packet(char packetType, String senderID, double seqNumber, Date interval)
+  public Packet(char packetType, int senderID, double seqNumber, Date interval)
   {
     this.packetType = packetType;
     this.senderID = senderID;
@@ -19,7 +19,7 @@ public class Packet
     return packetType;
   }
 
-  public String getSenderID(){
+  public int getSenderID(){
     return senderID;
   }
 
