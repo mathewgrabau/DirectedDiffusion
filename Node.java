@@ -9,9 +9,9 @@ public class Node
   EDReceive eRecv = new EDReceive();
   PacketTransmitter pktTrans = new PacketTransmitter();
   PacketReceiver pktRecv = new PacketReceiver();
-  RnFDataSend rnfSend = new RnFDataSend();
-  ExpDataSend expSend = new ExpDataSend();
-  ArrayList<DataInterest> interests = new ArrayList<DataInterest>();
+  RnFDataSend rnfSend = new RnFDataSend(10110, this);
+  ArrayList<ExpDataSend> expSends = new ArrayList<ExpDataSend>();
+  ArrayList<Gradient> gradients = new ArrayList<Gradient>();
 
   boolean TESTING = false;
 
@@ -92,7 +92,7 @@ public class Node
   {
     //just some values for now TODO: change them to make sense.
     char packetType = 'a';
-	int senderID = nodeID;
+    String senderID = "senderIDtest";
     double seqNumber = 1337;
     Date interval = new Date(1337);
 
@@ -114,5 +114,18 @@ public class Node
   public Packet lastReceivedPacketTest()
   {
     return pktRecv.getPacket();
+  }
+
+  public void run()
+  {
+    eRecv.run();
+    pktTrans.run();
+    pktRecv.run();
+    rnfSend.run();
+
+    for (ExpDataSend e : expSends)
+    {
+      e.run();
+    }
   }
 }
