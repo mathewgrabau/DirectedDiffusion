@@ -8,3 +8,5 @@ documentation/*
 *.zip
 first/*
 second/*
+bin/*
+bin
