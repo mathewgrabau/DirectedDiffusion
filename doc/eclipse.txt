@@ -1,0 +1,15 @@
+
+Configuring the eclipse env:
+
+Add exclusions to build path for:
+.git
+*.txt
+.gitignore
+.classpath
+.project
+doc
+.settings
+DirectedDiffusion_EclipseProfile.xml
+originals
+originals/*.txt
+
