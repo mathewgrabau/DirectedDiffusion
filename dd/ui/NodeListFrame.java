@@ -5,7 +5,7 @@
  * NodeListPanel
  * NodeCountPanel
  */
-package ui;
+package dd.ui;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

@@ -1,3 +1,5 @@
+package dd;
+
 public enum PacketType
 {
     EXPLORATORYDATA, INTEREST, REINFORCEMENT, REINFORCEDDATA

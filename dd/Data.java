@@ -1,3 +1,5 @@
+package dd;
+
 public class Data
 {
   public int datum;

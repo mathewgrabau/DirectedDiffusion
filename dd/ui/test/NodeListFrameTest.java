@@ -1,9 +1,9 @@
 /**
  * 
  */
-package ui.test;
+package dd.ui.test;
 
-import ui.NodeListFrame;
+import dd.ui.NodeListFrame;
 import javax.swing.JFrame;
 
 /**

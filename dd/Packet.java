@@ -1,3 +1,5 @@
+package dd;
+
 public class Packet implements Cloneable
 {
   public PacketType pType; // which of the four from the PacketType enum.

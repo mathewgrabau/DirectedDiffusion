@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ui;
+package dd.ui;
 
 import javax.swing.JPanel;
 
