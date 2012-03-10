@@ -63,4 +63,10 @@ public class NodeListFrame extends JFrame
   public void reset()
   {
   }
+  
+  
+  public void setCount(int count) {
+    countPanel.setCount(count);
+    
+  }
 }
