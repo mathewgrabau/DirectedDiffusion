@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import dd.Node;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
@@ -45,15 +47,19 @@ public class NodeListFrame extends JFrame
     countPanel = new NodeCountPanel();
     add(countPanel, BorderLayout.NORTH);
     
+    
+    listPanel = new NodeListPanel();
+    add(listPanel, BorderLayout.CENTER);
+    
     buttonPanel = new JPanel();
     buttonPanel.add(closeButton = new JButton("Close"));
     buttonPanel.setPreferredSize(buttonPanel.getMinimumSize());
     add(buttonPanel, BorderLayout.SOUTH);    
   }
   
-  public void addNode()
+  public void addNode(Node node)
   {
-    // register the node with the dataset.
+    listPanel.addNode(node);
   }
   
   
