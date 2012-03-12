@@ -3,6 +3,7 @@
  */
 package dd.ui.test;
 
+import dd.Node;
 import dd.ui.NodeListFrame;
 import javax.swing.JFrame;
 
@@ -27,6 +28,11 @@ public class NodeListFrameTest
     }
     
     
+    // 2) Register a node
+    Node n =  new Node(1, 0, 0, 1, 2);
+    underTest.addNode(n);
+    n = new Node(2, 1, 1, 1, 2);
+    underTest.addNode(n);
   }
   
   private static void createAndShowGUI() {

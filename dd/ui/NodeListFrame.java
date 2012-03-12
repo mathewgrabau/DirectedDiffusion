@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import dd.Node;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 /**
@@ -52,6 +53,7 @@ public class NodeListFrame extends JFrame
     add(listPanel, BorderLayout.CENTER);
     
     buttonPanel = new JPanel();
+    
     buttonPanel.add(closeButton = new JButton("Close"));
     buttonPanel.setPreferredSize(buttonPanel.getMinimumSize());
     add(buttonPanel, BorderLayout.SOUTH);    
@@ -59,7 +61,7 @@ public class NodeListFrame extends JFrame
   
   public void addNode(Node node)
   {
-    listPanel.addNode(node);
+    //listPanel.addNode(node);
   }
   
   
@@ -73,6 +75,5 @@ public class NodeListFrame extends JFrame
   
   public void setCount(int count) {
     countPanel.setCount(count);
-    
   }
 }
