@@ -3,6 +3,8 @@
  */
 package dd.ui.test;
 
+import java.util.ArrayList;
+
 import dd.Node;
 import dd.ui.NodeListFrame;
 import javax.swing.JFrame;
@@ -14,6 +16,21 @@ import javax.swing.JFrame;
 public class NodeListFrameTest
 {
   static NodeListFrame underTest;
+  static ArrayList<Node> nodes;
+  
+  static final int NUM_NODES = 3;  // just for placeholder, don't want to keep typing it out.
+  
+  private static void createTestObjects() {
+    //ArrayList<Node> nodes = new ArrayList<Node>();
+    nodes = new ArrayList<Node>();
+    Node n =  new Node(1, 0, 0, 1, NUM_NODES);
+    //underTest.addNode(n);
+    nodes.add(n);
+    n = new Node(2, 1, 1, 1, NUM_NODES);
+    //underTest.addNode(n);
+    nodes.add(n);
+  }
+  
   
   private static void doTests() throws Exception {
     // 1) Check the title got set correctly
@@ -28,19 +45,25 @@ public class NodeListFrameTest
     }
     
     
-    // 2) Register a node
-    Node n =  new Node(1, 0, 0, 1, 2);
-    underTest.addNode(n);
-    n = new Node(2, 1, 1, 1, 2);
-    underTest.addNode(n);
+    // 2) Register a new node
+    
+    Node inserted = new Node(3, 2, 2, 1, NUM_NODES);
+    underTest.addNode(inserted);
+    
+    
+    // Now there needs to be a new thing launched
   }
   
   private static void createAndShowGUI() {
-    underTest = new NodeListFrame("NodeListFrame Test");  
+    createTestObjects();
+    
+    underTest = new NodeListFrame("NodeListFrame Test", nodes);  
     underTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     underTest.pack();
     underTest.setVisible(true);
     
+    
+    // Then we need to actually launch the simulation now?
   }
   
   /**

@@ -3,67 +3,149 @@ package dd.ui;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
+import dd.Node;
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Vector;
 
-public class NodeListTableModel extends AbstractTableModel //implements TableModelListener
+public class NodeListTableModel extends AbstractTableModel // implements
+// TableModelListener
 {
-    final String[] columnNames = {
-        "ID",
-        "Location"
-    };
-    
-    Vector<Vector<Object>> data;
-    
-    public NodeListTableModel()
+  final String[] columnNames = { "ID", "Location", "Num Neighbors",
+      "Num Interests", "Energy Used" };
+
+  // These constants can be used in implementing various aspects of the table.
+  public final int COL_ID = 0;
+  public final int COL_LOCATION = 1;
+  public final int COL_NUM_NEIGHBORS = 2;
+  public final int COL_NUM_INTERESTS = 3;
+  public final int COL_ENERGY_USED = 4;
+
+  Collection<Node> sourceData;
+  Vector<Vector<Object>> data;
+
+  public NodeListTableModel(ArrayList<Node> nodes)
+  {
+    System.out.println("Inside the constructor");
+    data = new Vector<Vector<Object>>();
+    sourceData = nodes;
+    if (nodes != null)
     {
-      data = new Vector<Vector<Object>>();
-      
-      int n = 100;
-      for (int i = 0; i < n;i++)
+      for (Node node : nodes)
       {
-        Vector<Object> temp = new Vector<Object>();
-        temp.add(new Integer(i + 1));
-        temp.add("Some location");
-        data.add(temp);
+        // Vector row = new Vector();
+        // row.add(node.nodeID);
+        insertNodeToData(node);
       }
     }
+  }
 
-    @Override
-    public int getColumnCount()
+  /**
+   * The implementation
+   * 
+   * @param nodes
+   */
+  public NodeListTableModel(Vector<Node> nodes)
+  {
+    data = new Vector<Vector<Object>>();
+
+    sourceData = nodes;
+    if (nodes != null)
     {
-      // TODO Auto-generated method stub
-      return columnNames.length;
+      for (Node node : nodes)
+      {
+        // Vector row = new Vector();
+        // row.add(node.nodeID);
+        // row.add(new Point(node.xCoord, node.yCoord));
+        // row.add(node.numNeighbors());
+        insertNodeToData(node);
+      }
     }
+  }
+
+  public NodeListTableModel(Collection<Node> nodes)
+  {
+    data = new Vector<Vector<Object>>();
+    sourceData = nodes;
+    if (nodes != null)
+    {
+      for (Node node : nodes)
+      {
+        insertNodeToData(node);
+      }
+    }
+  }
+
+  private void insertNodeToData(Node node)
+  {
+    Vector<Object> v = new Vector<Object>();
+    v.add(node.nodeID);
+    v.add(new Point(node.xCoord, node.yCoord).toString());
+    v.add(node.numNeighbors());
+    // TODO calculate the number of interests
+    v.add(Integer.toString(1));
+    v.add(new Integer(node.nodeEnergyUsed));
     
-    @Override
-    public String getColumnName(int col)
-    {
-      return columnNames[col];
-    }
-
-    @Override
-    public int getRowCount()
-    {
-      return data.size();
-    }
-
-    @Override
-    public Object getValueAt(int row, int col)
-    {
-      return data.get(row).get(col);
-    }
+    data.add(v);
     
-    @Override
-    public Class getColumnClass(int columnIndex)
+  }
+
+  public int getColumnCount()
+  {
+    // TODO Auto-generated method stub
+    return columnNames.length;
+  }
+
+  public String getColumnName(int col)
+  {
+    return columnNames[col];
+  }
+
+  public int getRowCount()
+  {
+    return data.size();
+  }
+
+  public Object getValueAt(int row, int col)
+  {
+    // decode the value of the data now
+    // Node inquired = sourceData.;
+
+    return data.get(row).get(col);
+  }
+  
+  public void addNode(Node n)
+  {
+    if (n != null)
     {
-      return getValueAt(0, columnIndex).getClass();
-    }
-        
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex)
-    {
+      for (Node storedNode : sourceData)
+      {
+        // Since it has been found, then no worries here
+        if (storedNode.nodeID == n.nodeID)
+        {
+          return;
+        }
+      }
       
+      // Need to add in the new node to the collection
+      insertNodeToData(n);
+      sourceData.add(n);
+    }
+  }
+
+  @Override
+  public Class getColumnClass(int columnIndex)
+  {
+    return getValueAt(0, columnIndex).getClass();
+  }
+
+  @Override
+  public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+  {
+
     // TODO Add the code to update the various values.
     super.setValueAt(aValue, rowIndex, columnIndex);
-    }
+  }
 }

@@ -16,8 +16,14 @@ import dd.Node;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.Collection;
 
 /**
+ * Shows a basic window that contains the information about the nodes that are 
+ * running in the simulation.
+ * 
+ * It is a basic grid that displays the node information.
+ * 
  * @author mgrabau
  *
  */
@@ -29,16 +35,23 @@ public class NodeListFrame extends JFrame
   private JPanel buttonPanel;
   private JButton closeButton;
   
+  public NodeListFrame(String title, Collection<Node> nodes)
+  {
+    super(title);
+    init(nodes);
+  }
+  
   public NodeListFrame(String title) 
   {
     super(title);
-    init();
+    init(null);
   }
   
   /**
    * Create and place the components onto the frame.
+   * @param nodes The nodes that the information should be displayed for.
    */
-  protected void init()
+  protected void init(Collection<Node> nodes)
   {
     // create a layout
     
@@ -47,9 +60,9 @@ public class NodeListFrame extends JFrame
     
     countPanel = new NodeCountPanel();
     add(countPanel, BorderLayout.NORTH);
+    countPanel.setCount(nodes == null ? 0 : nodes.size());
     
-    
-    listPanel = new NodeListPanel();
+    listPanel = new NodeListPanel(nodes);
     add(listPanel, BorderLayout.CENTER);
     
     buttonPanel = new JPanel();
@@ -59,11 +72,10 @@ public class NodeListFrame extends JFrame
     add(buttonPanel, BorderLayout.SOUTH);    
   }
   
-  public void addNode(Node node)
+  public void addNode(Node node) throws Exception
   {
-    //listPanel.addNode(node);
+    listPanel.addNode(node);
   }
-  
   
   /**
    * Returns the panel to it's initial state.

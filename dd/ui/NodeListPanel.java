@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;  // needed for supporting the Points for the node location.
 import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.Vector;
 
 import dd.Node;
@@ -30,12 +31,25 @@ public class NodeListPanel extends JPanel {
   int currNode; // current node that is in the array
   Node[] registeredNodes;
   
+  private NodeListTableModel tableModel;
+  
   //public NodeListPanel(String
   
   public NodeListPanel()
   {
+    super();
+    initPanel(null);
+  }
+  
+  /**
+   * Constructor for the panel. Requires the passing of th e
+   * @param nodes
+   */
+  public NodeListPanel(Collection<Node> nodes)
+  {
     //super(new GridLayout(1, 0));
     super();
+    initPanel(nodes);
      
     /*
     rowData = new Vector<Object>();
@@ -48,45 +62,57 @@ public class NodeListPanel extends JPanel {
     colData.add("Res Energy");
     */
     
-    table = new JTable(new NodeListTableModel());
-    table.setPreferredScrollableViewportSize(new Dimension(500,70));
-    table.setFillsViewportHeight(true);
+    
     
     //JScrollPane scrollPane = new JScrollPane(table);
     
     //add(scrollPane);
+    
+  }
+  
+  /**
+   * Initialize the panel. If passing null for the nodes parameter, then 
+   * the panel will just appear empty.
+   * @param nodes
+   */
+  private void initPanel(Collection<Node> nodes)
+  {
+    table = new JTable(tableModel = new NodeListTableModel(nodes));
+    table.setPreferredScrollableViewportSize(new Dimension(500,70));
+    table.setFillsViewportHeight(true);
+    
     add(new JScrollPane(table));
     
-    
     setBounds(0, 0, 400, 400);
-    
-    registeredNodes = new Node[1];
-    currNode = 0;
   }
   
   private void addToTable(Node n)
   {
     // 1) insert for the data 
-    
+    tableModel.addNode(n);
   }
   
   
   private Vector<Object> formatNodeForRow(Node n)
   {
-    /*
+   
     Vector<Object> rowData = new Vector<Object>();
     
     rowData.add(Integer.toString(n.nodeID));
+    rowData.add(new Point(n.xCoord, n.yCoord));
+    
+    rowData.add(Integer.toString(n.nodeEnergyUsed));
     
     return rowData;
-    */
     
-    return null;
   }
   
   
   public void addNode(Node n) throws Exception
   {
+    // probably just need to insert it into the table model...
+    // if it isn't already there.
+    
     /*
     if (currNode >= registeredNodes.length)
     {
