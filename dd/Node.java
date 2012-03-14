@@ -216,6 +216,11 @@ public class Node
       }
     }
   }
+  
+  public int numUnsentInterests()
+  {
+    return interests.size();
+  }
 
   public void sendExploratoryDataPacketThrough()
   {
@@ -420,6 +425,11 @@ public class Node
   public void setAllNodes(ArrayList<Node> allNodes)
   {
     this.allNodes = allNodes;
+  }
+  
+  public int numNeighbors()
+  {
+    return myNeighbors.size();
   }
 
   public void findNeighbors()
