@@ -6,6 +6,7 @@ package dd.ui;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -77,9 +78,13 @@ public class NodeListPanel extends JPanel {
    */
   private void initPanel(Collection<Node> nodes)
   {
-    table = new JTable(tableModel = new NodeListTableModel(nodes));
+    tableModel = new NodeListTableModel(nodes);
+    table = new JTable(tableModel);
     table.setPreferredScrollableViewportSize(new Dimension(500,70));
     table.setFillsViewportHeight(true);
+    
+    // Register the rendering for the table
+    table.setDefaultRenderer(java.awt.Point.class, new PointRenderer());
     
     add(new JScrollPane(table));
     
@@ -163,3 +168,4 @@ public class NodeListPanel extends JPanel {
     
   }
 }
+
