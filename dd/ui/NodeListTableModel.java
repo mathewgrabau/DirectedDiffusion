@@ -1,8 +1,6 @@
 package dd.ui;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-
 import dd.Node;
 
 import java.awt.Point;
@@ -28,15 +26,12 @@ public class NodeListTableModel extends AbstractTableModel // implements
 
   public NodeListTableModel(ArrayList<Node> nodes)
   {
-    System.out.println("Inside the constructor");
     data = new Vector<Vector<Object>>();
     sourceData = nodes;
     if (nodes != null)
     {
       for (Node node : nodes)
       {
-        // Vector row = new Vector();
-        // row.add(node.nodeID);
         insertNodeToData(node);
       }
     }
@@ -48,18 +43,13 @@ public class NodeListTableModel extends AbstractTableModel // implements
    * @param nodes
    */
   public NodeListTableModel(Vector<Node> nodes)
-  {
+  {  
     data = new Vector<Vector<Object>>();
-
     sourceData = nodes;
     if (nodes != null)
     {
       for (Node node : nodes)
       {
-        // Vector row = new Vector();
-        // row.add(node.nodeID);
-        // row.add(new Point(node.xCoord, node.yCoord));
-        // row.add(node.numNeighbors());
         insertNodeToData(node);
       }
     }
@@ -82,7 +72,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
   {
     Vector<Object> v = new Vector<Object>();
     v.add(node.nodeID);
-    v.add(new Point(node.xCoord, node.yCoord).toString());
+    v.add(new Point(node.xCoord, node.yCoord));
     v.add(node.numNeighbors());
     // TODO calculate the number of interests
     v.add(Integer.toString(1));
@@ -138,6 +128,8 @@ public class NodeListTableModel extends AbstractTableModel // implements
   @Override
   public Class getColumnClass(int columnIndex)
   {
+    //System.out.println("columnIndex: " + columnIndex);
+    //System.out.println("The class type is " + getValueAt(0, columnIndex).getClass().getName());
     return getValueAt(0, columnIndex).getClass();
   }
 
@@ -149,3 +141,4 @@ public class NodeListTableModel extends AbstractTableModel // implements
     super.setValueAt(aValue, rowIndex, columnIndex);
   }
 }
+
