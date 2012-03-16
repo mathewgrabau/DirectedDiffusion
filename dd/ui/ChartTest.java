@@ -10,8 +10,10 @@ import info.monitorenter.gui.chart.io.ADataCollector;
 import info.monitorenter.gui.chart.io.RandomDataCollectorOffset;
 import info.monitorenter.gui.chart.traces.Trace2DLtd;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
-
+ 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 // this is a basic class just intended for experimenting with the chart workings
 
@@ -22,6 +24,7 @@ public class ChartTest
   static ADataCollector collector;
   static JButton startButton;
   static JButton stopButton;
+  static JSlider latencySlider;
   
   private ChartTest() {
     super();
@@ -41,6 +44,16 @@ public class ChartTest
     startButton.setEnabled(true);
     
     collector.stop();
+  }
+  
+  static void latencyChanged()
+  {
+    System.out.println("latencyChanged " + latencySlider.getValue());
+    //System.out.println(latencySlider.getValue)
+    if (!latencySlider.getValueIsAdjusting()) 
+    {
+      collector.setLatency(latencySlider.getValue());
+    }
   }
   
   static void runTest()
@@ -90,11 +103,37 @@ public class ChartTest
     });
     stopButton.setEnabled(false);
     
-    JPanel p = new JPanel(new GridLayout(1, 0));
+    GridLayout gl;
+    JPanel p = new JPanel(gl = new GridLayout(1, 0));
     //p.add(new JLabel("Here is some text"));
     p.add(startButton);
     p.add(stopButton);
+    frame.getContentPane().add(p, BorderLayout.NORTH);
+    
+    latencySlider = new JSlider(SwingConstants.HORIZONTAL);
+    latencySlider.setMinimum(500);  // half a second
+    latencySlider.setMaximum(5000); // five seconds
+    latencySlider.setMinorTickSpacing(100); // 0.1 seconds
+    latencySlider.setMajorTickSpacing(500); // 0.5 seconds
+    latencySlider.setPaintLabels(true);
+    latencySlider.setPaintTicks(true);
+    latencySlider.setSnapToTicks(true);
+    latencySlider.addChangeListener(new ChangeListener() {
+      
+      @Override
+      public void stateChanged(ChangeEvent e)
+      {
+        // TODO Auto-generated method stub
+        if (e.getSource() == latencySlider)
+          latencyChanged();
+      }
+    });
+    
+    p = new JPanel(new GridLayout(2, 0));
+    p.add(new JLabel("Latency (update interval) - ms"));
+    p.add(latencySlider);
     frame.getContentPane().add(p, BorderLayout.SOUTH);
+    
     
     frame.setSize(500, 500);
     frame.setVisible(true);
@@ -102,10 +141,9 @@ public class ChartTest
     // Set a timer that can periodically add a point
     // the latency is set in milliseconds
     collector = new RandomDataCollectorOffset(trace, 1000);
+    latencySlider.setValue(1000);
     //collector.start();    
   }
-  
-  
   
 
   /**
