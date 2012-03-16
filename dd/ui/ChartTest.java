@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import info.monitorenter.gui.chart.*;
 import info.monitorenter.gui.chart.io.ADataCollector;
@@ -140,9 +141,10 @@ public class ChartTest
     
     // Set a timer that can periodically add a point
     // the latency is set in milliseconds
-    collector = new RandomDataCollectorOffset(trace, 1000);
+    //collector = new RandomDataCollectorOffset(trace, 1000);
+    collector = new TestDataCollector(trace, 1000);
     latencySlider.setValue(1000);
-    //collector.start();    
+       
   }
   
 
@@ -164,4 +166,29 @@ public class ChartTest
     });
   }
 
+}
+
+
+class TestDataCollector extends ADataCollector {
+
+  private long x;
+  private Random random;
+  public TestDataCollector(ITrace2D trace, long latency)
+  {
+    super(trace, latency);
+    x = 0;
+    random = new Random();
+    // TODO Auto-generated constructor stub
+  }
+
+  @Override
+  public ITracePoint2D collectData()
+  {
+    int y = random.nextInt(1000) + 1;
+    TracePoint2D pt = new TracePoint2D(x++, y);
+    return pt;
+  }
+  
+  
+  
 }
