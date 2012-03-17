@@ -49,8 +49,6 @@ public class ChartTest
   
   static void latencyChanged()
   {
-    System.out.println("latencyChanged " + latencySlider.getValue());
-    //System.out.println(latencySlider.getValue)
     if (!latencySlider.getValueIsAdjusting()) 
     {
       collector.setLatency(latencySlider.getValue());
