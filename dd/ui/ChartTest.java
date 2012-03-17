@@ -81,7 +81,6 @@ public class ChartTest
     startButton = new JButton("Start");
     startButton.addActionListener(new ActionListener() {
 
-      @Override
       public void actionPerformed(ActionEvent e)
       {
         if (e.getSource() == startButton)
@@ -94,7 +93,6 @@ public class ChartTest
     stopButton = new JButton("Stop");
     stopButton.addActionListener(new ActionListener() {
 
-      @Override
       public void actionPerformed(ActionEvent e)
       {
         if (e.getSource() == stopButton)
@@ -121,7 +119,6 @@ public class ChartTest
     latencySlider.setSnapToTicks(true);
     latencySlider.addChangeListener(new ChangeListener() {
       
-      @Override
       public void stateChanged(ChangeEvent e)
       {
         // TODO Auto-generated method stub
@@ -156,7 +153,6 @@ public class ChartTest
     // TODO Auto-generated method stub
     SwingUtilities.invokeLater(new Runnable() {
 
-      @Override
       public void run()
       {
         // TODO Auto-generated method stub
