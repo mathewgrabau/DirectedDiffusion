@@ -38,7 +38,7 @@ public class NodeListPanel extends JPanel {
   
   public NodeListPanel()
   {
-    super();
+    super(new GridLayout(1, 1));
     initPanel(null);
   }
   
@@ -62,7 +62,6 @@ public class NodeListPanel extends JPanel {
     colData.add("ID");
     colData.add("Res Energy");
     */
-    
     
     
     //JScrollPane scrollPane = new JScrollPane(table);
