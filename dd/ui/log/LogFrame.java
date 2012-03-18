@@ -28,6 +28,7 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
   private JPanel tablePanel;
   private LogTableModel tableModel;
   private JTable messagesTable;
+  private LogMessagesPanel messagesPanel;
   
   public LogFrame(String title)
   {
@@ -49,14 +50,8 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
     filter.addListener(this);
     add(filter, BorderLayout.NORTH);
     
-    // add in the table model for events now
-    messagesTable = new JTable(tableModel = new LogTableModel());
-    messagesTable.setPreferredScrollableViewportSize(new Dimension(500, 50));
-    messagesTable.setFillsViewportHeight(true);
-    JScrollPane pane = new JScrollPane();
-    JPanel p = new JPanel(new GridLayout(1, 1));
-    p.add(pane);
-    add(p, BorderLayout.CENTER);
+    messagesPanel = new LogMessagesPanel();
+    add(messagesPanel, BorderLayout.CENTER);
     
     // button for clearing the things
     buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
