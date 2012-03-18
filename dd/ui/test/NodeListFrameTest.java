@@ -18,7 +18,7 @@ public class NodeListFrameTest
   static NodeListFrame underTest;
   static ArrayList<Node> nodes;
   
-  static final int NUM_NODES = 3;  // just for placeholder, don't want to keep typing it out.
+  static final int NUM_NODES = 4;  // just for placeholder, don't want to keep typing it out.
   
   private static void createTestObjects() {
     //ArrayList<Node> nodes = new ArrayList<Node>();
@@ -50,7 +50,11 @@ public class NodeListFrameTest
     Node inserted = new Node(3, 2, 2, 1, NUM_NODES);
     underTest.addNode(inserted);
     
+    inserted = new Node(4, 3, 3, 1, NUM_NODES);
+    underTest.addNode(inserted);
     
+    inserted = new Node(5, 4, 4, 1, NUM_NODES);
+    underTest.addNode(inserted);
     // Now there needs to be a new thing launched
   }
   
