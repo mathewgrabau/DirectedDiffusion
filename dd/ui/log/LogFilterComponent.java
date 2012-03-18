@@ -1,18 +1,14 @@
 /**
- * 
+ * DirectedDiffusion
  */
 package dd.ui.log;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventListener;
-import java.util.EventObject;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.event.EventListenerList;
 
 enum FilterSetting {
@@ -24,6 +20,12 @@ enum FilterSetting {
 
 
 /**
+ * Displays the filter for events, in a JPanel.
+ * 
+ * Uses 2 combo boxes for the implementation.
+ * 
+ * Important: the initial event for Filter change will not be captured by
+ * listeners since they cannot register for the events yet. 
  * @author Mathew Grabau
  *
  */
@@ -39,11 +41,26 @@ public class LogFilterComponent extends JPanel implements ActionListener
   
   private EventListenerList listenerList;
   
+  /**
+   * Default constructor, will set the values to the ALL and NONE values.
+   * 
+   */
   public LogFilterComponent() 
   {
     super();
     
     init(FilterSetting.ALL, LogLevel.NONE);
+  }
+  
+  /**
+   * Constructor to set the values of the components initially.
+   * @param setting initial setting value
+   * @param level initial log level to show
+   */
+  public LogFilterComponent(FilterSetting setting, LogLevel level)
+  {
+    super();
+    init(setting, level);
   }
   
   /**
@@ -61,11 +78,19 @@ public class LogFilterComponent extends JPanel implements ActionListener
     listenerList.remove(FilterListener.class, l);
   }
   
+  /**
+   * Get current FilterSetting
+   * @return current FilterSetting
+   */
   public FilterSetting getSetting()
   {
     return currentSetting;
   }
   
+  /**
+   * Get current LogLevel.
+   * @return the current LogLevel.
+   */
   public LogLevel getLevel()
   {
     return currentLevel;
@@ -96,7 +121,6 @@ public class LogFilterComponent extends JPanel implements ActionListener
     // Under the show all, no filter is required.
     if (setting == FilterSetting.ALL)
     {
-      // TODO determine how to fire an event
       comboLevel.setEnabled(false);
     }
     else
@@ -114,9 +138,6 @@ public class LogFilterComponent extends JPanel implements ActionListener
       settingChanged = setting != currentSetting;
       currentSetting = setting;
     }
-
-    // TODO determine an event to fire, that should allow for the
-    // make it a filter changed event
 
     //comboLevel.setEnabled(true);
 
@@ -201,47 +222,5 @@ public class LogFilterComponent extends JPanel implements ActionListener
   {
     // TODO Auto-generated method stub
     configControls();
-  }
-}
-
-interface FilterListener extends EventListener
-{
-  void filterChanged(FilterEvent e);
-}
-
-class FilterEvent extends EventObject 
-{
-  private FilterSetting setting;
-  private LogLevel level;
-  private boolean settingChanged;
-  private boolean levelChanged;
-  
-  public FilterEvent(Object source, FilterSetting setting, LogLevel level, boolean settingChanged, boolean levelChanged)
-  {
-    super(source);
-    this.setting = setting;
-    this.level = level;
-    this.settingChanged = settingChanged;
-    this.levelChanged = levelChanged;
-  }
-  
-  public FilterSetting getSetting()
-  {
-    return setting;
-  }
-  
-  public LogLevel getLevel()
-  {
-    return level;
-  }
-  
-  public boolean isSettingChanged()
-  {
-    return settingChanged;
-  }
-  
-  public boolean isLevelChanged()
-  {
-    return levelChanged;
   }
 }
