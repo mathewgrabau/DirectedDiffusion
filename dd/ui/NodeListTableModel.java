@@ -26,6 +26,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
 
   public NodeListTableModel(ArrayList<Node> nodes)
   {
+    super();
     data = new Vector<Vector<Object>>();
     sourceData = nodes;
     if (nodes != null)
@@ -44,6 +45,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
    */
   public NodeListTableModel(Vector<Node> nodes)
   {  
+    super();
     data = new Vector<Vector<Object>>();
     sourceData = nodes;
     if (nodes != null)
@@ -57,6 +59,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
 
   public NodeListTableModel(Collection<Node> nodes)
   {
+    super();
     data = new Vector<Vector<Object>>();
     sourceData = nodes;
     if (nodes != null)
