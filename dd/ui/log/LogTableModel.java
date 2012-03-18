@@ -16,12 +16,13 @@ import java.util.Date;
  */
 public class LogTableModel extends AbstractTableModel
 {
-  private String[] columns;
+  private String[] columnNames;
   private FilterSetting setting;    // the currently set filtering model
   private LogLevel level;   // the currently set logging level
   private LogLevel defaultLevel;  // when a message is added without a level, they will use this level
   private ArrayList<ArrayList<Object>> rowData;   // this is the data that actually gets shown
   private ArrayList<ArrayList<Object>> messages;   // this is the collection that has been accumulated
+  private boolean logModelMessages;   // if the model should inject some messges about itself
   
   private static int ID_GEN = 0; 
   
@@ -33,14 +34,18 @@ public class LogTableModel extends AbstractTableModel
   
   public LogTableModel() 
   {
-    columns = new String[4];
-    columns[0] = "ID";
-    columns[1] = "Time";
-    columns[2] = "Level";
-    columns[3] = "Message";
+    columnNames = new String[4];
+    columnNames[0] = "ID";
+    columnNames[1] = "Time";
+    columnNames[2] = "Level";
+    columnNames[3] = "Message";
     
     defaultLevel = level = LogLevel.INFO;
     setting = FilterSetting.ALL;
+    
+    logModelMessages = true;
+    
+    rowData = new ArrayList<ArrayList<Object>>();
   }
  
   /**
@@ -50,6 +55,16 @@ public class LogTableModel extends AbstractTableModel
   private static int nextId()
   {
     return ++ID_GEN;
+  }
+  
+  public void setLogModelMessages(boolean enable)
+  {
+    logModelMessages = enable;
+  }
+  
+  public boolean getLogModelMessages()
+  {
+    return logModelMessages;
   }
   
   /**
@@ -68,12 +83,28 @@ public class LogTableModel extends AbstractTableModel
   public void setDefaultLevel(LogLevel level)
   {
     defaultLevel = level;
+    if (logModelMessages)
+      registerMessage(LogLevel.INFO, this.getClass().getName() + ": default log level set to " + level);
     updateRowData();
   }
   
   public void setFilterSetting(FilterSetting setting)
   {
     this.setting = setting;
+    if (logModelMessages)
+      registerMessage(LogLevel.INFO, this.getClass().getName() + ": filter setting changed to " + setting);
+    updateRowData();
+  }
+  
+  /**
+   * Set the level used to control the outputted messages (in conjunction with the FilterSetting).
+   * @param level new level to assign
+   */
+  public void setLogLevel(LogLevel level)
+  {
+    this.level = level;
+    if (logModelMessages)
+      registerMessage(LogLevel.INFO, this.getClass().getName() + ": log level changed to " + level);
     updateRowData();
   }
   
@@ -184,12 +215,6 @@ public class LogTableModel extends AbstractTableModel
     return setting;
   }
   
-  public void setLogLevel(LogLevel level)
-  {
-    this.level = level;
-    // TODO process/apply the new log level
-  }
-  
   /**
    * Return the currently set log level.
    * @return Current LogLevel.
@@ -199,12 +224,17 @@ public class LogTableModel extends AbstractTableModel
     return level;
   }
   
+  public String getColumnName(int column)
+  {
+    return columnNames[column];
+  }
+  
   /* (non-Javadoc)
    * @see javax.swing.table.TableModel#getColumnCount()
    */
   public int getColumnCount()
   {
-    return columns.length;
+    return columnNames.length;
   }
 
   /* (non-Javadoc)
