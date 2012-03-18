@@ -6,14 +6,18 @@ package dd.ui.log;
 /**
  * Defines the allowable event log levels.
  * 
+ * 
+ * In the list they are ordered from least to most information provided
+ * per setting.
  * @author Mathew Grabau
  *
  */
 public enum LogLevel
 {
   NONE,
-  DEBUG,
-  INFO,
+  ERROR,
   WARN,
-  ERROR
+  INFO,
+  DEBUG
 }
+
