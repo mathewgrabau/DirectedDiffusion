@@ -48,8 +48,8 @@ public class NodeListPanel extends JPanel {
    */
   public NodeListPanel(Collection<Node> nodes)
   {
-    //super(new GridLayout(1, 0));
-    super();
+    // using this makes sure that it will resize
+    super(new GridLayout(1,1));
     initPanel(nodes);
      
     /*
@@ -80,15 +80,14 @@ public class NodeListPanel extends JPanel {
   {
     tableModel = new NodeListTableModel(nodes);
     table = new JTable(tableModel);
-    table.setPreferredScrollableViewportSize(new Dimension(500,70));
+    table.setPreferredScrollableViewportSize(new Dimension(500,60));
     table.setFillsViewportHeight(true);
-    
+
     // Register the rendering for the table
     table.setDefaultRenderer(java.awt.Point.class, new PointRenderer());
     
-    add(new JScrollPane(table));
-    
-    setBounds(0, 0, 400, 400);
+    JScrollPane jsp = new JScrollPane(table);
+    add(jsp);
   }
   
   private void addToTable(Node n)
