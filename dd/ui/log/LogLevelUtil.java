@@ -51,4 +51,9 @@ public final class LogLevelUtil
     
     return valOne - valTwo;
   }
+  
+  public static boolean equals(LogLevel one, LogLevel two)
+  {
+    return compare(one, two) == 0;
+  }
 }
