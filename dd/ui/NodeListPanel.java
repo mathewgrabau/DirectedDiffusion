@@ -118,6 +118,8 @@ public class NodeListPanel extends JPanel {
     // probably just need to insert it into the table model...
     // if it isn't already there.
     
+    tableModel.addNode(n);
+    
     /*
     if (currNode >= registeredNodes.length)
     {
@@ -166,6 +168,12 @@ public class NodeListPanel extends JPanel {
   public void reset()
   {
     
+  }
+  
+  
+  public int getNodeCount()
+  {
+    return tableModel.getRowCount();
   }
 }
 
