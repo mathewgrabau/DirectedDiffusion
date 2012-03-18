@@ -1137,7 +1137,11 @@ must investigate further as to what is being developed
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">1326</XPD:ATTR>
+<<<<<<< .merge_file_IFjch5
 <XPD:ATTR name="Top" type="integer">253</XPD:ATTR>
+=======
+<XPD:ATTR name="Top" type="integer">252</XPD:ATTR>
+>>>>>>> .merge_file_BZNbQY
 <XPD:ATTR name="Width" type="integer">239</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">134</XPD:ATTR>
 <XPD:ATTR name="AutoResize" type="boolean">True</XPD:ATTR>
@@ -1634,7 +1638,11 @@ must investigate further as to what is being developed
 <XPD:OBJ name="OwnedViews[21]" type="UMLAssociationView" guid="MZ8ZnBNzx0eHz3VOo83JOAAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
+<<<<<<< .merge_file_IFjch5
 <XPD:ATTR name="Points" type="Points">1465,587;1464,586;1450,386</XPD:ATTR>
+=======
+<XPD:ATTR name="Points" type="Points">1465,587;1464,586;1450,385</XPD:ATTR>
+>>>>>>> .merge_file_BZNbQY
 <XPD:ATTR name="ShowProperty" type="boolean">True</XPD:ATTR>
 <XPD:REF name="Model">fSgMg51ATUejOwM9rWE11wAA</XPD:REF>
 <XPD:REF name="Head">Vshm3p7CGkiThC1nzN8smgAA</XPD:REF>
@@ -2352,7 +2360,11 @@ must investigate further as to what is being developed
 <XPD:OBJ name="OwnedViews[47]" type="UMLRealizationView" guid="ZzvLITT7Vkum7BKjDQGoYQAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
+<<<<<<< .merge_file_IFjch5
 <XPD:ATTR name="Points" type="Points">1445,253;1444,30</XPD:ATTR>
+=======
+<XPD:ATTR name="Points" type="Points">1445,252;1444,30</XPD:ATTR>
+>>>>>>> .merge_file_BZNbQY
 <XPD:REF name="Model">eZ77WnVsa02k+aqOXv5ScAAA</XPD:REF>
 <XPD:REF name="Head">JEco+kB2qUK0/107RSmkYQAA</XPD:REF>
 <XPD:REF name="Tail">Vshm3p7CGkiThC1nzN8smgAA</XPD:REF>
