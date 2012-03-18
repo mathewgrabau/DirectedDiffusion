@@ -75,6 +75,7 @@ public class NodeListFrame extends JFrame
   public void addNode(Node node) throws Exception
   {
     listPanel.addNode(node);
+    countPanel.setCount(listPanel.getNodeCount());
   }
   
   /**
