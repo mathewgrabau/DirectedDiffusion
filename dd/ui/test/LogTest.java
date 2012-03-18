@@ -5,6 +5,7 @@ package dd.ui.test;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import dd.ui.log.LogFrame;
 
@@ -28,10 +29,18 @@ public class LogTest
    */
   public static void main(String[] args)
   {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (Exception e) {
+      System.err.println("setLookAndFeelFailed");
+    }
+    
     SwingUtilities.invokeLater(new Runnable() {
       
       public void run()
       {
+        
+        
         createAndShowGUI();
       }
     });
