@@ -48,4 +48,11 @@ public class LogMessagesPanel extends JPanel
   {
     return tableModel.getMessageCount();
   }
+  
+  public void clear()
+  {
+    tableModel.removeAll();
+    // let the changes take effect now
+    repaint();
+  }
 }

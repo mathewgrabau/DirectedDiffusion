@@ -59,6 +59,18 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
     add(buttonPanel, BorderLayout.SOUTH);
     buttonPanel.setAlignmentX(RIGHT_ALIGNMENT);
     clearButton.setPreferredSize(clearButton.getMinimumSize());
+    
+    clearButton.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e)
+      {
+        if (e.getSource() == clearButton)
+          messagesPanel.clear();
+        
+      }
+      
+    });
   }
 
   /* (non-Javadoc)
