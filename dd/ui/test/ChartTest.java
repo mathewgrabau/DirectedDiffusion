@@ -119,7 +119,6 @@ public class ChartTest
       
       public void stateChanged(ChangeEvent e)
       {
-        // TODO Auto-generated method stub
         if (e.getSource() == latencySlider)
           latencyChanged();
       }
