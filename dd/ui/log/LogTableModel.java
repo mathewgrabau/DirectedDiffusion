@@ -52,14 +52,7 @@ public class LogTableModel extends AbstractTableModel
     //rowData = new ArrayList<ArrayList<Object>>();
     data = new Vector<Vector<Object>>();
     
-    registerMessage(this.getClass().getName() + ": log initialized.");
-    
-    Vector<Object> test = new Vector<Object>();
-    test.add(2);
-    test.add(new Date());
-    test.add(LogLevel.INFO);
-    test.add("this is just a test of the logger");
-    data.add(test);
+    addMessage(this.getClass().getName() + ": log initialized.");
   }
  
   /**
@@ -118,7 +111,7 @@ public class LogTableModel extends AbstractTableModel
   {
     this.level = level;
     if (logModelMessages)
-      registerMessage(LogLevel.INFO, this.getClass().getName() + ": log level changed to " + level);
+      addMessage(LogLevel.INFO, this.getClass().getName() + ": log level changed to " + level);
     updateRowData();
   }
   
@@ -129,9 +122,9 @@ public class LogTableModel extends AbstractTableModel
    * 
    * @see LogLevel
    */
-  public void registerMessage(String msg)
+  public void addMessage(String msg)
   {
-    registerMessage(defaultLevel, msg);
+    addMessage(defaultLevel, msg);
   }
   
   /**
@@ -140,7 +133,7 @@ public class LogTableModel extends AbstractTableModel
    * @param level The logging level to attach to it
    * @param msg String containing the message
    */
-  public void registerMessage(LogLevel level, String msg)
+  public void addMessage(LogLevel level, String msg)
   {
     // put it into the messages that have been queued
     Vector<Object> messageStore = new Vector<Object>();
