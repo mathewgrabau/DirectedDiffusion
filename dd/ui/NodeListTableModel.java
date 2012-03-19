@@ -77,7 +77,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
     v.add(node.nodeID);
     v.add(new Point(node.xCoord, node.yCoord));
     v.add(node.numNeighbors());
-    // TODO calculate the number of interests
+    // TODO calculate the number of interests (will require a public API of some sort)
     v.add(Integer.toString(1));
     v.add(new Integer(node.nodeEnergyUsed));
     
@@ -87,7 +87,6 @@ public class NodeListTableModel extends AbstractTableModel // implements
 
   public int getColumnCount()
   {
-    // TODO Auto-generated method stub
     return columnNames.length;
   }
 
@@ -125,6 +124,8 @@ public class NodeListTableModel extends AbstractTableModel // implements
       // Need to add in the new node to the collection
       insertNodeToData(n);
       sourceData.add(n);
+      
+      fireTableDataChanged();
     }
   }
 
