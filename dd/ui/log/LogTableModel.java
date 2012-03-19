@@ -81,6 +81,7 @@ public class LogTableModel extends AbstractTableModel
   {
     messages.clear();
     data.clear();
+    fireTableDataChanged();
   }
   
   /**
