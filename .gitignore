@@ -4,7 +4,7 @@ documentation/*
 .classpath
 *.class
 *.pdf
-*.ppt*
+#*.ppt*
 *.zip
 first/*
 second/*
