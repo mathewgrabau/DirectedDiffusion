@@ -4,7 +4,6 @@
 package dd.ui.log;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,8 +12,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -26,7 +23,6 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
   private LogFilterComponent filter;
   private JPanel buttonPanel;
   private JButton clearButton;
-  private LogTableModel tableModel;
   private LogMessagesPanel messagesPanel;
   private JPanel statusPanel;
   private JTextField statusField;
@@ -43,7 +39,7 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
     super("dd.ui.log.LogFrame");
     init();
   }
-
+  
   protected void init()
   {
   
@@ -108,7 +104,7 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
   {
     // TODO Auto-generated method stub
 
-  }
+  } 
 
   public void filterChanged(FilterEvent e)
   {
@@ -138,5 +134,5 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
   {
     messagesPanel.addMessage(level, text);
     updateStatusPanel();
-  }
+  } 
 }
