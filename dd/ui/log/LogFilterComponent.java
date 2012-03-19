@@ -11,12 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
-enum FilterSetting {
-  ALL,
-  ONLY,
-  ABOVE,
-  BELOW
-};
 
 
 /**
