@@ -204,7 +204,7 @@ public class LogFilterComponent extends JPanel implements ActionListener
     comboLevel.addItem(LogLevel.ERROR);
     comboLevel.addItem(LogLevel.WARN);
     comboLevel.addItem(LogLevel.INFO);
-    comboLevel.addItem(LogLevel.NONE);
+    comboLevel.addItem(LogLevel.DEBUG);
     comboLevel.addActionListener(this);
     add(comboLevel);
     
