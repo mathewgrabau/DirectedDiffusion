@@ -6,6 +6,9 @@ import dd.Node;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 public class NodeListTableModel extends AbstractTableModel // implements
@@ -24,6 +27,9 @@ public class NodeListTableModel extends AbstractTableModel // implements
   Collection<Node> sourceData;
   Vector<Vector<Object>> data;
 
+  private Timer updateTimer;
+  private boolean timerRunning;
+  
   public NodeListTableModel(ArrayList<Node> nodes)
   {
     super();
@@ -39,7 +45,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
   }
 
   /**
-   * The implementation
+   * Registers the node with a new collection
    * 
    * @param nodes
    */
@@ -69,6 +75,40 @@ public class NodeListTableModel extends AbstractTableModel // implements
         insertNodeToData(node);
       }
     }
+  }
+  
+  /**
+   * Set the time between checking for the 
+   * @param ms
+   */
+  public void setUpdatePeriod(int ms)
+  {
+    if (!timerRunning)
+    {
+      startTimer(ms);
+    }
+  }
+  
+  private void startTimer(int period)
+  {
+    if (updateTimer == null)
+    {
+      updateTimer = new Timer();
+      // This is going to go through and poll the nodes for their status
+      updateTimer.scheduleAtFixedRate(new TimerTask() {
+        
+        @Override
+        public void run()
+        {
+           // Then let's update the nodes now
+        }
+      }, new Date(), period);
+    }
+  }
+  
+  private void timerTick()
+  {
+    
   }
 
   private void insertNodeToData(Node node)
