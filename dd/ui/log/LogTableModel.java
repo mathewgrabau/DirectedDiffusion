@@ -91,7 +91,7 @@ public class LogTableModel extends AbstractTableModel
   {
     defaultLevel = level;
     if (logModelMessages)
-      registerMessage(LogLevel.INFO, this.getClass().getName() + ": default log level set to " + level);
+      addMessage(LogLevel.INFO, this.getClass().getName() + ": default log level set to " + level);
     updateRowData();
   }
   
@@ -99,7 +99,7 @@ public class LogTableModel extends AbstractTableModel
   {
     this.setting = setting;
     if (logModelMessages)
-      registerMessage(LogLevel.INFO, this.getClass().getName() + ": filter setting changed to " + setting);
+      addMessage(LogLevel.INFO, this.getClass().getName() + ": filter setting changed to " + setting);
     updateRowData();
   }
   
