@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  * @author Mathew Grabau
@@ -25,10 +26,11 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
   private LogFilterComponent filter;
   private JPanel buttonPanel;
   private JButton clearButton;
-  private JPanel tablePanel;
   private LogTableModel tableModel;
-  private JTable messagesTable;
   private LogMessagesPanel messagesPanel;
+  private JPanel statusPanel;
+  private JTextField statusField;
+  private JPanel bottomPanel;
   
   public LogFrame(String title)
   {
@@ -54,23 +56,49 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
     add(messagesPanel, BorderLayout.CENTER);
     
     // button for clearing the things
+    bottomPanel = new JPanel(new GridLayout(1, 2));
+    
+    buildStatusPanel();
+    bottomPanel.add(statusPanel);
+    buildButtonPanel();    
+    bottomPanel.add(buttonPanel);
+       
+    add(bottomPanel, BorderLayout.SOUTH);
+  }
+  
+  private void buildButtonPanel()
+  {
     buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     buttonPanel.add(clearButton = new JButton("Clear"));
-    add(buttonPanel, BorderLayout.SOUTH);
+    //add(buttonPanel, BorderLayout.SOUTH);
     buttonPanel.setAlignmentX(RIGHT_ALIGNMENT);
     clearButton.setPreferredSize(clearButton.getMinimumSize());
-    
     clearButton.addActionListener(new ActionListener() {
 
       @Override
       public void actionPerformed(ActionEvent e)
       {
         if (e.getSource() == clearButton)
+        {
           messagesPanel.clear();
-        
+          updateStatusPanel();
+        } 
       }
       
     });
+  }
+  
+  private void buildStatusPanel()
+  {
+    statusPanel = new JPanel(new GridLayout(1, 1));
+    statusPanel.add(statusField = new JTextField());
+    statusField.setEditable(false);
+    updateStatusPanel();
+  }
+  
+  private void updateStatusPanel() 
+  {
+    statusField.setText("Showing " + messagesPanel.getDisplayCount() + " of " + messagesPanel.getTotalCount() + " events");
   }
 
   /* (non-Javadoc)
@@ -84,8 +112,31 @@ public class LogFrame extends JFrame implements ActionListener, FilterListener
 
   public void filterChanged(FilterEvent e)
   {
-    // TODO Auto-generated method stub
-    System.out.println("filterChanged " + e.isSettingChanged() + " " + e.isLevelChanged());
+    if (e.isSettingChanged())
+    {
+      messagesPanel.setFilterSetting(e.getSetting());
+    }
+    
+    if (e.isLevelChanged())
+    {
+      messagesPanel.setLogLevel(e.getLevel());
+    }
+    
+    updateStatusPanel();
   }
 
+  /**
+   * @param text  
+   */
+  public void addMessage(String text)
+  {
+    messagesPanel.addMessage(text);
+    updateStatusPanel();
+  }
+  
+  public void addMessage(LogLevel level, String text)
+  {
+    messagesPanel.addMessage(level, text);
+    updateStatusPanel();
+  }
 }
