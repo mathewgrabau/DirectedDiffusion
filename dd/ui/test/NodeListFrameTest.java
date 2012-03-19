@@ -1,5 +1,5 @@
 /**
- * 
+ * DirectedDiffusion
  */
 package dd.ui.test;
 
