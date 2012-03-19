@@ -219,6 +219,8 @@ public class LogTableModel extends AbstractTableModel
       }
       
     }
+    
+    fireTableDataChanged();
   }
   
   /**
