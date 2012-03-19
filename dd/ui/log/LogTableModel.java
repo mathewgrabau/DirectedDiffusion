@@ -21,7 +21,6 @@ public class LogTableModel extends AbstractTableModel
   private FilterSetting setting;    // the currently set filtering model
   private LogLevel level;   // the currently set logging level
   private LogLevel defaultLevel;  // when a message is added without a level, they will use this level
-  //private ArrayList<ArrayList<Object>> rowData;   // this is the data that actually gets shown
   Vector<Vector<Object>> data;
   private Vector<Vector<Object>> messages;   // this is the collection that has been accumulated
   private boolean logModelMessages;   // if the model should inject some messges about itself
@@ -37,11 +36,6 @@ public class LogTableModel extends AbstractTableModel
   public LogTableModel() 
   {
     super();
-    //columnNames = new String[4];
-    //columnNames[0] = "ID";
-    //columnNames[1] = "Time";
-    //columnNames[2] = "Level";
-    //columnNames[3] = "Message";
     
     defaultLevel = level = LogLevel.INFO;
     setting = FilterSetting.ALL;
@@ -49,11 +43,11 @@ public class LogTableModel extends AbstractTableModel
     logModelMessages = true;
     
     messages = new Vector<Vector<Object>>();
-    //rowData = new ArrayList<ArrayList<Object>>();
     data = new Vector<Vector<Object>>();
     
     addMessage(this.getClass().getName() + ": log initialized.");
   }
+  
  
   /**
    * Get the next id value for logging into the the message list.
@@ -203,7 +197,7 @@ public class LogTableModel extends AbstractTableModel
         // For only: include if they are the same
         if (setting == FilterSetting.ONLY && msgLevel == level)
         {
-          
+          data.add(msg);
         }
         // for above: included if the message registers higher on the comparison (positive)
         // the above comparison has been made inclusive
@@ -244,7 +238,6 @@ public class LogTableModel extends AbstractTableModel
   
   public String getColumnName(int column)
   {
-    System.out.println("getColumnName was called " + column + " " + columnNames[column]);
     return columnNames[column];
   }
   
@@ -253,7 +246,6 @@ public class LogTableModel extends AbstractTableModel
    */
   public int getColumnCount()
   {
-    System.out.println("getColumnCount was called " + columnNames.length);
     return columnNames.length;
   }
 
@@ -262,7 +254,6 @@ public class LogTableModel extends AbstractTableModel
    */
   public int getRowCount()
   {
-    System.out.println("getRowCount called ");
     return data.size();
   }
   
@@ -289,7 +280,6 @@ public class LogTableModel extends AbstractTableModel
    */
   public Object getValueAt(int row, int col)
   {
-    System.out.println("getValueAte called " + row + " " + col);
     return data.get(row).get(col);
   }
   
@@ -298,16 +288,12 @@ public class LogTableModel extends AbstractTableModel
     switch (columnIndex)
     {
     case COL_ID:
-      System.out.println("Returning the Integer.class");
       return Integer.class;
     case COL_TIME:
-      System.out.println("Returning the Date.class");
       return Date.class;
     case COL_LEVEL:
-      System.out.println("Returning the LogLevel.class");
       return LogLevel.class;
     case COL_MSG:
-      System.out.println("Returning the String.class");
       return String.class;
     }
     
