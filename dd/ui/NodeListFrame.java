@@ -32,8 +32,9 @@ public class NodeListFrame extends JFrame
   private NodeListPanel listPanel;
   private NodeCountPanel countPanel;
   
-  private JPanel buttonPanel;
+  protected JPanel buttonPanel;
   private JButton closeButton;
+  
   
   public NodeListFrame(String title, Collection<Node> nodes)
   {
@@ -41,15 +42,22 @@ public class NodeListFrame extends JFrame
     init(nodes);
   }
   
-  public NodeListFrame(String title) 
+  public NodeListFrame(String title)
   {
     super(title);
+    init(null);
+  }
+  
+  public NodeListFrame()
+  {
+    super();
     init(null);
   }
   
   /**
    * Create and place the components onto the frame.
    * @param nodes The nodes that the information should be displayed for.
+   * @param useTimer Add controls to pause/start the simulation
    */
   protected void init(Collection<Node> nodes)
   {
@@ -66,10 +74,14 @@ public class NodeListFrame extends JFrame
     add(listPanel, BorderLayout.CENTER);
     
     buttonPanel = new JPanel();
-    
+    createButtonPanel();
+  }
+  
+  protected void createButtonPanel()
+  {
     buttonPanel.add(closeButton = new JButton("Close"));
     buttonPanel.setPreferredSize(buttonPanel.getMinimumSize());
-    add(buttonPanel, BorderLayout.SOUTH);    
+    add(buttonPanel, BorderLayout.SOUTH);
   }
   
   public void addNode(Node node) throws Exception
