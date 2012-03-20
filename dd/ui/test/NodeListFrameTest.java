@@ -4,6 +4,8 @@
 package dd.ui.test;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import dd.Node;
 import dd.ui.NodeListFrame;
@@ -44,18 +46,51 @@ public class NodeListFrameTest
       throw new Exception("Test failed: title not properly set");
     }
     
+    // let's try starting the update
+    underTest.startUpdateTimer(200);
     
     // 2) Register a new node
     
-    Node inserted = new Node(3, 2, 2, 1, NUM_NODES);
-    underTest.addNode(inserted);
+    final Node nodeOne = new Node(3, 2, 2, 1, NUM_NODES);
+    underTest.addNode(nodeOne);
     
-    inserted = new Node(4, 3, 3, 1, NUM_NODES);
-    underTest.addNode(inserted);
+    Timer t = new Timer();
+    t.scheduleAtFixedRate(new TimerTask() {
+
+      @Override
+      public void run()
+      {
+        nodeOne.nodeEnergyUsed++;
+      }
+    }, 1000, 250);
     
-    inserted = new Node(5, 4, 4, 1, NUM_NODES);
-    underTest.addNode(inserted);
+    final Node nodeTwo = new Node(4, 3, 3, 1, NUM_NODES);
+    underTest.addNode(nodeTwo);
+    
+    t.scheduleAtFixedRate(new TimerTask() {
+
+      @Override
+      public void run()
+      {
+        nodeTwo.nodeEnergyUsed++;
+      }
+      
+    }, 1000, 500);
+    
+    final Node nodeThree = new Node(5, 4, 4, 1, NUM_NODES);
+    underTest.addNode(nodeThree);
     // Now there needs to be a new thing launched
+    
+    t.scheduleAtFixedRate(new TimerTask(){
+
+      @Override
+      public void run()
+      {
+        nodeThree.nodeEnergyUsed++;
+      }
+      
+    }, 1000, 750);
+    
   }
   
   private static void createAndShowGUI() {

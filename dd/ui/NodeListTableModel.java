@@ -78,6 +78,39 @@ public class NodeListTableModel extends AbstractTableModel // implements
   }
   
   /**
+   * Returns the row data for a particular node.
+   * 
+   * @param node  Reference to the node
+   * @return Reference to the applicable vector. null if nothing is found/null 
+   * reference is passed in
+   */
+  private Vector<Object> getNodeRow(Node node)
+  {
+    if (node == null)
+    {
+      return null;
+    }
+    
+    System.out.println(node.nodeID);
+    
+    for (Vector<Object> curr : data)
+    {
+      int id = (Integer) curr.get(COL_ID);
+      if (id == node.nodeID)
+      {
+        return curr;
+      }
+      // special case, it isn't found if the nodeID has already passed
+      //else if (id < node.nodeID)
+      //{
+        //return null;
+      //}
+    }
+    
+    return null;
+  }
+  
+  /**
    * Set the time between checking for the 
    * @param ms
    */
@@ -100,7 +133,25 @@ public class NodeListTableModel extends AbstractTableModel // implements
         @Override
         public void run()
         {
-           // Then let's update the nodes now
+          synchronized (this)
+          {
+           for (Node node : sourceData)
+           {
+             // look up the node data
+             Vector<Object> row = getNodeRow(node);
+             if (row != null)
+             {
+               // TODO Update more parameters 
+               row.set(COL_ENERGY_USED, node.nodeEnergyUsed);
+             }
+             else
+             {
+               System.err.println("TimerTask--> Warning!!! Node " + node.nodeID + " could not be found...");
+             }
+           }
+          }
+          
+          fireTableDataChanged();
         }
       }, new Date(), period);
     }
@@ -111,6 +162,11 @@ public class NodeListTableModel extends AbstractTableModel // implements
     
   }
 
+  /**
+   * Perform an ordered insert of data into the model.
+   * 
+   * @param node 
+   */
   private void insertNodeToData(Node node)
   {
     Vector<Object> v = new Vector<Object>();
@@ -121,8 +177,26 @@ public class NodeListTableModel extends AbstractTableModel // implements
     v.add(Integer.toString(1));
     v.add(new Integer(node.nodeEnergyUsed));
     
-    data.add(v);
-    
+    synchronized (this)
+    {
+      // Go through and do an ordered insert
+      boolean inserted = false;
+      for (int i = 0; i < data.size() && !inserted; i++)
+      {
+        Vector<Object> curr = data.get(i);
+        int id = (Integer) curr.get(COL_ID);
+        if (node.nodeID < id)
+        {
+          data.add(i, v);
+          inserted = true;
+        }
+      }
+
+      if (!inserted)
+      {
+        data.add(v);
+      }
+    }
   }
 
   public int getColumnCount()
@@ -137,34 +211,54 @@ public class NodeListTableModel extends AbstractTableModel // implements
 
   public int getRowCount()
   {
-    return data.size();
+    int size;
+    synchronized (this)
+    {
+      size = data.size();
+    }
+    return size;
   }
 
   public Object getValueAt(int row, int col)
   {
     // decode the value of the data now
     // Node inquired = sourceData.;
-
-    return data.get(row).get(col);
+    Object value;
+    
+    // data.get(row).get(col);
+    synchronized (this)
+    {
+      value = data.get(row).get(col);
+    }
+    
+    return value;
   }
   
   public void addNode(Node n)
   {
     if (n != null)
     {
-      for (Node storedNode : sourceData)
-      {
-        // Since it has been found, then no worries here
-        if (storedNode.nodeID == n.nodeID)
+      synchronized(this) {
+        boolean found = false;
+        for (Node storedNode : sourceData)
         {
-          return;
+          // Since it has been found, then no worries here
+          if (storedNode.nodeID == n.nodeID)
+          {
+            found = true;
+            break;
+          }
+        }
+      
+        // Need to add in the new node to the collection
+        if (!found)
+        {
+          insertNodeToData(n);
+          sourceData.add(n);
+          //System.out.println("added " +n.nodeID + " to sourceData");
+          //System.out.println(sourceData.size());
         }
       }
-      
-      // Need to add in the new node to the collection
-      insertNodeToData(n);
-      sourceData.add(n);
-      
       fireTableDataChanged();
     }
   }
@@ -176,7 +270,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
     //System.out.println("The class type is " + getValueAt(0, columnIndex).getClass().getName());
     return getValueAt(0, columnIndex).getClass();
   }
-
+/*
   @Override
   public void setValueAt(Object aValue, int rowIndex, int columnIndex)
   {
@@ -184,5 +278,6 @@ public class NodeListTableModel extends AbstractTableModel // implements
     // TODO Add the code to update the various values.
     super.setValueAt(aValue, rowIndex, columnIndex);
   }
+  */
 }
 

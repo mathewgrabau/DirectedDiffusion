@@ -173,5 +173,14 @@ public class NodeListPanel extends JPanel {
   {
     return tableModel.getRowCount();
   }
+
+  /**
+   * @param milliSecs
+   */
+  public void startUpdateTimer(int milliSecs)
+  {
+    tableModel.setUpdatePeriod(milliSecs);
+    
+  }
 }
 

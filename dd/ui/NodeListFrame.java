@@ -89,4 +89,14 @@ public class NodeListFrame extends JFrame
   public void setCount(int count) {
     countPanel.setCount(count);
   }
+
+  /**
+   * Starts the timer on the table model, with the various
+   * @param milliSecs Number of milliseconds to set for the update period
+   */
+  public void startUpdateTimer(int milliSecs)
+  {
+    listPanel.startUpdateTimer(milliSecs);
+    
+  }
 }
