@@ -91,8 +91,6 @@ public class NodeListTableModel extends AbstractTableModel // implements
       return null;
     }
     
-    System.out.println(node.nodeID);
-    
     for (Vector<Object> curr : data)
     {
       int id = (Integer) curr.get(COL_ID);
@@ -100,14 +98,28 @@ public class NodeListTableModel extends AbstractTableModel // implements
       {
         return curr;
       }
-      // special case, it isn't found if the nodeID has already passed
-      //else if (id < node.nodeID)
-      //{
-        //return null;
-      //}
     }
     
     return null;
+  }
+  
+  public boolean isTimerRunning()
+  {
+    return timerRunning;
+  }
+  
+  public void startTimer()
+  {
+    
+  }
+  
+  public void stopTimer()
+  {
+    if (timerRunning)
+    {
+      updateTimer.cancel();
+      timerRunning = false;
+    }
   }
   
   /**
@@ -154,6 +166,8 @@ public class NodeListTableModel extends AbstractTableModel // implements
           fireTableDataChanged();
         }
       }, new Date(), period);
+      
+      timerRunning = true;
     }
   }
   
@@ -163,7 +177,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
   }
 
   /**
-   * Perform an ordered insert of data into the model.
+   * Perform an insert of data into the model. Typically an ordered insert.
    * 
    * @param node 
    */
@@ -255,8 +269,6 @@ public class NodeListTableModel extends AbstractTableModel // implements
         {
           insertNodeToData(n);
           sourceData.add(n);
-          //System.out.println("added " +n.nodeID + " to sourceData");
-          //System.out.println(sourceData.size());
         }
       }
       fireTableDataChanged();
@@ -266,18 +278,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
   @Override
   public Class getColumnClass(int columnIndex)
   {
-    //System.out.println("columnIndex: " + columnIndex);
-    //System.out.println("The class type is " + getValueAt(0, columnIndex).getClass().getName());
     return getValueAt(0, columnIndex).getClass();
   }
-/*
-  @Override
-  public void setValueAt(Object aValue, int rowIndex, int columnIndex)
-  {
-
-    // TODO Add the code to update the various values.
-    super.setValueAt(aValue, rowIndex, columnIndex);
-  }
-  */
 }
 
