@@ -47,7 +47,7 @@ public class NodeListFrameTest
     }
     
     // let's try starting the update
-    underTest.startUpdateTimer(200);
+    //underTest.startUpdateTimer(200);
     
     // 2) Register a new node
     

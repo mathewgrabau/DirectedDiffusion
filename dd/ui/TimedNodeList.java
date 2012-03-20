@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import dd.Node;
 
 /**
+ * 
  * @author mgrabau
  *
  */
@@ -28,17 +29,25 @@ public class TimedNodeList extends NodeListFrame implements ActionListener
   public TimedNodeList(String title, Collection<Node> nodes, int refreshInterval)
   {
     super(title, nodes);
-    
+    configureTimer(refreshInterval);
   }
   
   public TimedNodeList(String title, Collection<Node> nodes)
   {
     super(title, nodes);
+    
+    configureTimer(DEFAULT_INTERVAL);
   }
   
   public TimedNodeList()
   {
     super();
+    configureTimer(DEFAULT_INTERVAL);
+  }
+  
+  protected void configureTimer(int refreshInterval) 
+  {
+    this.refreshInterval = refreshInterval;
   }
   
   /* (non-Javadoc)
@@ -64,11 +73,40 @@ public class TimedNodeList extends NodeListFrame implements ActionListener
   {
     if (e.getSource() == pauseButton)
     {
-      // TODO implement pausing
+      pauseButton.setEnabled(false);
+      resumeButton.setEnabled(true);
+      stopUpdateTimer();
     }
     else if (e.getSource() == resumeButton)
     {
-      // TODO implement resuming
+      pauseButton.setEnabled(true);
+      resumeButton.setEnabled(false);
+      startUpdateTimer();
     }
+  }
+
+  public void startUpdateTimer()
+  {
+    listPanel.startUpdateTimer(refreshInterval);
+    
+    // configure the UI appropriately (since this can be sourced from an outside call)
+    pauseButton.setEnabled(true);
+    resumeButton.setEnabled(false);
+  }
+  
+  /**
+   * Starts the timer on the table model, with the various
+   * @param milliSecs Number of milliseconds to set for the update period
+   */
+  public void startUpdateTimer(int milliSecs)
+  {
+    refreshInterval = milliSecs;
+    listPanel.startUpdateTimer(milliSecs);
+    
+  }
+  
+  public void stopUpdateTimer()
+  {
+    listPanel.stopUpdateTimer();
   }
 }
