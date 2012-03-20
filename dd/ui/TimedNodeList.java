@@ -103,6 +103,8 @@ public class TimedNodeList extends NodeListFrame implements ActionListener
     refreshInterval = milliSecs;
     listPanel.startUpdateTimer(milliSecs);
     
+    pauseButton.setEnabled(true);
+    resumeButton.setEnabled(false);
   }
   
   public void stopUpdateTimer()
