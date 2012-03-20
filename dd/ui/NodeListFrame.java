@@ -29,8 +29,8 @@ import java.util.Collection;
  */
 public class NodeListFrame extends JFrame 
 {
-  private NodeListPanel listPanel;
-  private NodeCountPanel countPanel;
+  protected NodeListPanel listPanel;
+  protected NodeCountPanel countPanel;
   
   protected JPanel buttonPanel;
   private JButton closeButton;
@@ -77,6 +77,9 @@ public class NodeListFrame extends JFrame
     createButtonPanel();
   }
   
+  /**
+   * Creates the panel at the bottom of the 
+   */
   protected void createButtonPanel()
   {
     buttonPanel.add(closeButton = new JButton("Close"));
@@ -97,18 +100,8 @@ public class NodeListFrame extends JFrame
   {
   }
   
-  
-  public void setCount(int count) {
-    countPanel.setCount(count);
-  }
-
-  /**
-   * Starts the timer on the table model, with the various
-   * @param milliSecs Number of milliseconds to set for the update period
-   */
-  public void startUpdateTimer(int milliSecs)
+  public void setCount(int count) 
   {
-    listPanel.startUpdateTimer(milliSecs);
-    
+    countPanel.setCount(count);
   }
 }
