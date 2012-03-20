@@ -54,7 +54,9 @@ public class NodeListFrameTest
     final Node nodeOne = new Node(3, 2, 2, 1, NUM_NODES);
     underTest.addNode(nodeOne);
     
-    Timer t = new Timer();
+    final Timer t = new Timer();
+    int n = 10;
+    
     t.scheduleAtFixedRate(new TimerTask() {
 
       @Override
@@ -87,10 +89,23 @@ public class NodeListFrameTest
       public void run()
       {
         nodeThree.nodeEnergyUsed++;
+        if (decrementCounter())
+        {
+          t.cancel();
+        }
+        
       }
       
     }, 1000, 750);
     
+  }
+  
+  static int n = 10;
+  private static boolean decrementCounter()
+  {
+    n--;
+    System.out.println(n + " times remaining");
+    return n==0;
   }
   
   private static void createAndShowGUI() {
