@@ -22,16 +22,16 @@ import dd.ui.TimedNodeList;
  */
 public class TimedNodeListTest
 {
-  
-  final static int NUM_NODES = 5;
+  // these constants control the demonstration/testing for the component
+  final static int NUM_NODES = 100;
+  final static int TABLE_REFRESH = 200;
+  final static int NODES_PULSE = 100;
   
   public static void createAndShowGUI()
   {
-    
-   
+       
     final Vector<Node> nodes = new Vector<Node>();
-    
-    
+        
     for (int i = 0; i < NUM_NODES; i++)
     {
       nodes.add(new Node(i+1, i, i, i, NUM_NODES));
@@ -42,7 +42,7 @@ public class TimedNodeListTest
     tl.pack();
     tl.setVisible(true);
     
-    tl.startUpdateTimer();
+    tl.startUpdateTimer(TABLE_REFRESH);
     
     final Random rand = new Random();
     
@@ -52,13 +52,19 @@ public class TimedNodeListTest
       @Override
       public void run()
       {
-        // pick a random node
-        int n = rand.nextInt(NUM_NODES);
-        Node node = nodes.get(n);
-        // update the energy by a random amount
-        node.nodeEnergyUsed += rand.nextInt(5);
+        // For testing/demoing, change this code as desired.
+        int todo = NUM_NODES;
+        
+        while (todo-- != 0)
+        {
+          // pick a random node
+          int n = rand.nextInt(NUM_NODES);
+          Node node = nodes.get(n);
+          // update the energy by a random amount
+          node.nodeEnergyUsed += rand.nextInt(5);
+        }
       }
-    }, new Date(), 500);
+    }, new Date(), NODES_PULSE);
   }
   
   public static void doTests()
