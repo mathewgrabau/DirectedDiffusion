@@ -118,6 +118,7 @@ public class NodeListTableModel extends AbstractTableModel // implements
     if (timerRunning)
     {
       updateTimer.cancel();
+      updateTimer = null;
       timerRunning = false;
     }
   }
@@ -134,41 +135,49 @@ public class NodeListTableModel extends AbstractTableModel // implements
     }
   }
   
+  /**
+   * Enumerate the nodes and update the model with the new data derived from them.
+   */
+  public void updateModel()
+  {
+    synchronized (this)
+    {
+      for (Node node : sourceData)
+      {
+        // look up the node data
+        Vector<Object> row = getNodeRow(node);
+        if (row != null)
+        {
+          // TODO Update more parameters
+          row.set(COL_ENERGY_USED, node.nodeEnergyUsed);
+        } else
+        {
+          System.err.println("updateModel--> Warning!!! Node " + node.nodeID
+              + " could not be found...");
+        }
+      }
+    }
+    fireTableDataChanged();
+  }
+  
   private void startTimer(int period)
   {
     if (updateTimer == null)
     {
       updateTimer = new Timer();
-      // This is going to go through and poll the nodes for their status
-      updateTimer.scheduleAtFixedRate(new TimerTask() {
-        
-        @Override
-        public void run()
-        {
-          synchronized (this)
-          {
-           for (Node node : sourceData)
-           {
-             // look up the node data
-             Vector<Object> row = getNodeRow(node);
-             if (row != null)
-             {
-               // TODO Update more parameters 
-               row.set(COL_ENERGY_USED, node.nodeEnergyUsed);
-             }
-             else
-             {
-               System.err.println("TimerTask--> Warning!!! Node " + node.nodeID + " could not be found...");
-             }
-           }
-          }
-          
-          fireTableDataChanged();
-        }
-      }, new Date(), period);
-      
-      timerRunning = true;
     }
+    
+    // This is going to go through and poll the nodes for their status
+    updateTimer.scheduleAtFixedRate(new TimerTask() {
+
+      @Override
+      public void run()
+      {
+        updateModel();
+      }
+    }, new Date(), period);
+
+    timerRunning = true;
   }
   
   private void timerTick()
