@@ -182,5 +182,13 @@ public class NodeListPanel extends JPanel {
     tableModel.setUpdatePeriod(milliSecs);
     
   }
+
+  /**
+   * Stop the timer from the updating
+   */
+  public void stopUpdateTimer()
+  {
+    tableModel.stopTimer();
+  }
 }
 
