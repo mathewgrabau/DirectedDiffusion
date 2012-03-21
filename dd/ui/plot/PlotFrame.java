@@ -10,8 +10,11 @@ import info.monitorenter.gui.chart.traces.Trace2DLtd;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,12 +22,16 @@ import javax.swing.JPanel;
 import dd.Node;
 
 /**
- * The abstract class that 
+ * The abstract class that gives the basis for implementing a 
+ * frame that contains a plot.
+ * 
+ * The default panel implementation contains buttons for 
+ * starting/stopping the trace.
  * 
  * @author mgrabau
  *
  */
-public abstract class PlotFrame extends JFrame
+public abstract class PlotFrame extends JFrame implements ActionListener
 {
   protected JPanel titlePanel;
   protected JPanel plotPanel;
@@ -37,6 +44,9 @@ public abstract class PlotFrame extends JFrame
   
   static final int DEFAULT_LATENCY = 500;  // pulse for the latency
   protected long latency;    // the amount of latency that is set
+  private JButton startButton;
+  private JButton stopButton;
+  private JPanel buttonPanel;
   
   public PlotFrame(String title, Collection<Node> nodes)
   {
@@ -62,9 +72,19 @@ public abstract class PlotFrame extends JFrame
     return trace.getName();
   }
   
+  /**
+   * Sets the collector latency and the internal tracking parameter.
+   * If the collector is not initialized, only the internal tracking
+   * parameter will be changed.
+   * 
+   * @param ms the collector latency to set in milliseconds
+   */
   public void setLatency(long ms)
   {
-    collector.setLatency(ms);
+    if (collector != null)
+      collector.setLatency(ms);
+    // instead just store it for when the collector is started
+    latency = ms;
   }
  
   /**
@@ -76,6 +96,11 @@ public abstract class PlotFrame extends JFrame
     return trace;
   }
   
+  public boolean isCollectorRunning()
+  {
+    return collector.isRunning();
+  }
+  
   /**
    * This is a hook method that is called to change the collector that is 
    * used by the init method to configure the collector.
@@ -84,6 +109,7 @@ public abstract class PlotFrame extends JFrame
    * to initially.
    * 
    * @param nodes The collection of nodes to register with the component.
+   * @param latency 
    */
   protected void setCollector(Collection<Node> nodes)
   {
@@ -116,6 +142,16 @@ public abstract class PlotFrame extends JFrame
       addPlot(nodes);
       
     }
+    
+    // TODO move this to a parameter instead
+    boolean withButtons = true;
+    if (withButtons)
+    {
+      buttonPanel = new JPanel();
+      createButtonPanel("Start", "Stop");
+      add(buttonPanel, BorderLayout.SOUTH);
+    }  
+    
     //chart.setSize(chart.getPreferredSize());
     //chart.setBounds(0,0,500, 500);
     setMinimumSize(new Dimension(500, 500));
@@ -124,6 +160,87 @@ public abstract class PlotFrame extends JFrame
     setCollector(nodes);
     
     //add(plotPanel, BorderLayout.SOUTH);
+  }
+  
+  public void actionPerformed(ActionEvent e)
+  {
+    if (startButton != null && e.getSource() == startButton)
+    {
+      startButtonClicked(e);
+    }
+    else if (stopButton != null && e.getSource() == stopButton)
+    {
+      stopButtonClicked(e);
+    }
+    
+    // This component doesn't know how to handle it, 
+    // hopefully descendant class was smart enough to
+    // override the method and handle whatever they needed to.
+  }
+  
+  /**
+   * Default implementation of the start button handler. Override to provide 
+   * different function.
+   * 
+   * The default implementation starts the collector (if not running)
+   * and toggles the button configuration.
+   * @param e Event data for the click event (forwarded unchanged).
+   */
+  protected void startButtonClicked(ActionEvent e)
+  {
+    // TODO implement starting the trace/collector
+    if (!collector.isRunning())
+    {
+      collector.start();
+      stopButton.setEnabled(true);
+      startButton.setEnabled(false);
+    }
+  }
+  
+  /**
+   * Default implementation of the stop button handler. Override to provide 
+   * different function.
+   * 
+   * The default implementation stop the collector (if running)
+   * and toggles the button configuration.
+   * @param e Event data for the click event (forwarded unchanged).
+   */
+  protected void stopButtonClicked(ActionEvent e)
+  {
+    // TODO implement stopping the trace/collector
+    if (collector.isRunning())
+    {
+      collector.stop();
+      stopButton.setEnabled(false);
+      startButton.setEnabled(true);
+    }
+  }
+  
+  // the two hooks that are 
+  protected void wireStartButton()
+  {
+    if (startButton != null)
+    {
+      startButton.addActionListener(this);
+    }
+  }
+  
+  protected void wireStopButton()
+  {
+    
+  }
+  
+  protected void createButtonPanel(String startText, String stopText)
+  {
+    startButton = new JButton(startText);
+    stopButton = new JButton(stopText);
+    
+    buttonPanel = new JPanel();
+    
+    buttonPanel.add(startButton);
+    buttonPanel.add(stopButton);
+    
+    
   }
   
   protected void createTitlePanel(String title)
