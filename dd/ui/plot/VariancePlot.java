@@ -24,7 +24,7 @@ public class VariancePlot extends PlotFrame
 {
   public VariancePlot(String title)
   {
-    super(title, null);
+    super(title, null, "Variance Plot");
   } 
 
   /* (non-Javadoc)
@@ -53,6 +53,11 @@ public class VariancePlot extends PlotFrame
   protected void addPlot(Collection<Node> nodes, String plotTitle)
   {
     trace = new Trace2DLtdReplacing();
+    trace.setName(plotTitle);
     
+    chart = new Chart2D();
+    chart.addTrace(trace);
+    
+    add(chart, BorderLayout.CENTER);
   }
 }

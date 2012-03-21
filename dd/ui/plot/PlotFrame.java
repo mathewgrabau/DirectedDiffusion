@@ -48,7 +48,6 @@ public abstract class PlotFrame extends JFrame
     init(nodes, plotTitle);
   }
   
-  
   public void setTraceName(String name)
   {
     trace.setName(name);
@@ -77,6 +76,13 @@ public abstract class PlotFrame extends JFrame
   {
     setLayout(new BorderLayout());
     
+    if (plotTitle == null)
+      plotTitle = "";
+    createTitlePanel(plotTitle);
+    add(titlePanel, BorderLayout.NORTH);
+    
+    titlePanel.setPreferredSize(new Dimension(titlePanel.getSize().width, 50));
+    
     //plotPanel = new JPanel(new GridLayout(1, 1));
     
     //addTitlePanel();
@@ -100,8 +106,9 @@ public abstract class PlotFrame extends JFrame
   
   protected void createTitlePanel(String title)
   {
-    titlePanel = new Panel(new GridLayout(1, 1));
-    
+    titlePanel = new JPanel(new GridLayout(1, 1));
+    titleLabel = new JLabel("DirectedDiffusion Plot: " + title);
+    titlePanel.add(titleLabel);
   }
   
   /**
