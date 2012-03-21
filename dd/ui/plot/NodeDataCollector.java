@@ -43,6 +43,7 @@ public class NodeDataCollector extends ADataCollector
 	public NodeDataCollector(ITrace2D trace, long latency, Collection<Node> nodes)
 	{
 		super(trace, latency);
+		registeredNodes = new Vector<Node>();
 		registerNodes(nodes);
 		currentPoint = 0;
 	}
@@ -56,7 +57,12 @@ public class NodeDataCollector extends ADataCollector
 	
 	public void registerNodes(Collection<Node> toMonitor)
 	{
-		
+		// if passed null then nothing to do
+	  if (toMonitor == null || toMonitor.isEmpty())
+	  {
+	    return;
+	  }
+	  
 		// Easy case - nothing there just register the data
 		if (registeredNodes.isEmpty())
 		{
