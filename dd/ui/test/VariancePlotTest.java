@@ -19,13 +19,20 @@ import dd.ui.plot.VariancePlot;
 public class VariancePlotTest
 {
   static int PLOT_LATENCY = 500;
-  
+  static VariancePlot plot;
   public static void createAndShowUI()
   {
-    VariancePlot plot = new VariancePlot("Variance Plot Test");
+    plot = new VariancePlot("Variance Plot Test");
     plot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     plot.pack();
     plot.setVisible(true);
+  }
+  
+  public static void doTests()
+  {
+    // test setting the trace title once it has been configured
+    // uncomment it to see it if desired
+    //plot.setTraceName("Test change the plot name");
   }
   
   public static void main(String[] args)
@@ -54,11 +61,10 @@ public class VariancePlotTest
     
     SwingUtilities.invokeLater(new Runnable() {
       
-      
-      @Override
       public void run()
       {
         createAndShowUI();
+        doTests();
       }
     });
   }
