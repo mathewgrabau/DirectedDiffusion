@@ -66,5 +66,6 @@ public class VariancePlot extends PlotFrame
   {
    
     //super.setCollector(nodes);
+    collector = new VarianceCollector(trace, this.latency, nodes)
   }
 }
