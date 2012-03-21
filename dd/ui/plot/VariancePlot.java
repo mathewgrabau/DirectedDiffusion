@@ -60,4 +60,11 @@ public class VariancePlot extends PlotFrame
     
     add(chart, BorderLayout.CENTER);
   }
+  
+  @Override
+  protected void setCollector(Collection<Node> nodes)
+  {
+   
+    //super.setCollector(nodes);
+  }
 }

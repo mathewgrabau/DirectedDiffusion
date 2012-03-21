@@ -29,23 +29,27 @@ public abstract class PlotFrame extends JFrame
   protected JPanel titlePanel;
   protected JPanel plotPanel;
   protected Chart2D chart;
+  protected NodeDataCollector collector;
   protected Trace2DLtd trace;
   
   protected JLabel titleLabel;
   protected boolean initialized;
   
+  static final int DEFAULT_LATENCY = 500;  // pulse for the latency
+  protected long latency;    // the amount of latency that is set
+  
   public PlotFrame(String title, Collection<Node> nodes)
   {
     super(title);
     
-    init(nodes, "");
+    init(nodes, "", DEFAULT_LATENCY);
     
   }
   
   public PlotFrame(String title, Collection<Node> nodes, String plotTitle)
   {
     super(title);
-    init(nodes, plotTitle);
+    init(nodes, plotTitle, DEFAULT_LATENCY);
   }
   
   public void setTraceName(String name)
@@ -58,9 +62,9 @@ public abstract class PlotFrame extends JFrame
     return trace.getName();
   }
   
-  public void setLatency()
+  public void setLatency(long ms)
   {
-    
+    collector.setLatency(ms);
   }
  
   /**
@@ -72,8 +76,24 @@ public abstract class PlotFrame extends JFrame
     return trace;
   }
   
-  protected void init(Collection<Node> nodes, String plotTitle)
+  /**
+   * This is a hook method that is called to change the collector that is 
+   * used by the init method to configure the collector.
+   * 
+   * Use the latency field to get the amount of latency to set the collector
+   * to initially.
+   * 
+   * @param nodes The collection of nodes to register with the component.
+   */
+  protected void setCollector(Collection<Node> nodes)
   {
+    collector = new NodeDataCollector(trace, latency, nodes);
+  }
+  
+  protected void init(Collection<Node> nodes, String plotTitle, long latency)
+  {
+    setLatency(latency);
+    
     setLayout(new BorderLayout());
     
     if (plotTitle == null)
@@ -100,6 +120,8 @@ public abstract class PlotFrame extends JFrame
     //chart.setBounds(0,0,500, 500);
     setMinimumSize(new Dimension(500, 500));
     setPreferredSize(getMinimumSize());
+    
+    setCollector(nodes);
     
     //add(plotPanel, BorderLayout.SOUTH);
   }
