@@ -21,6 +21,8 @@ import info.monitorenter.gui.chart.io.ADataCollector;
  * 
  * The basic implementation just reads energy. Override it to implement
  * a different pulse.
+ * 
+ * The default just returns the sum of all the nodes.
  */
 public class NodeDataCollector extends ADataCollector
 {
@@ -112,9 +114,19 @@ public class NodeDataCollector extends ADataCollector
 	  return new TracePoint2D(currentNode.nodeID, currentNode.nodeEnergyUsed);
 	}
 
-	@Override
-	public ITracePoint2D collectData()
-	{
-	  
-	}
+  /* (non-Javadoc)
+   * @see info.monitorenter.gui.chart.io.ADataCollector#collectData()
+   */
+  @Override
+  public ITracePoint2D collectData()
+  {
+    long sum = 0;
+    for (Node node : registeredNodes)
+    {
+      ITracePoint2D tp = getNodeData(node);
+      sum += Math.round(tp.getY());
+    }
+    
+    return new TracePoint2D(currentPoint, sum);
+  }
 }

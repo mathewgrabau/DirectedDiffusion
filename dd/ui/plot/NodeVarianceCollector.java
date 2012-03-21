@@ -3,13 +3,11 @@
  */
 package dd.ui.plot;
 
-import info.monitorenter.gui.chart.IPointPainter;
 import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.ITracePoint2D;
 import info.monitorenter.gui.chart.TracePoint2D;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.Vector;
 
 import dd.Node;
