@@ -15,11 +15,16 @@ import dd.Node;
 /**
  * @author mgrabau
  *
+ * Implements a collector that gathers the node energy data on pulses and
+ * forwards it to the applicable item gathering point.
  */
 public class NodeVarianceCollector extends NodeDataCollector
 {
 
   /**
+   * Create a NodeVarianceCollector with specified parameters.
+   * This allows for the implementation
+   *  
    * @param trace
    * @param latency
    * @param nodes
