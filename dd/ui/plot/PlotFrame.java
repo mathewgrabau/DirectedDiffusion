@@ -5,6 +5,7 @@ package dd.ui.plot;
 
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.ITrace2D;
+import info.monitorenter.gui.chart.io.FileFilterExtensions;
 import info.monitorenter.gui.chart.traces.Trace2DLtd;
 
 import java.awt.BorderLayout;
@@ -21,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import dd.Node;
@@ -236,14 +238,40 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     BufferedImage imgToSave = takeSnapShot();
    
     boolean done = false;
-        
+    
     JFileChooser fileChooser = new JFileChooser();
+    ImageFilter temp;
+    
+    temp = new JPEGFilter();
+    if (temp.isSupported())
+      fileChooser.addChoosableFileFilter(temp);
+    temp = new PNGFilter();
+    if (temp.isSupported())
+      fileChooser.addChoosableFileFilter(temp);
+    temp = new BitmapFilter();
+    if (temp.isSupported())
+      fileChooser.addChoosableFileFilter(temp);
+    temp = new GIFFilter();
+    if (temp.isSupported())
+      fileChooser.addChoosableFileFilter(temp);
+    
+    fileChooser.setAcceptAllFileFilterUsed(false);
+    
+    
+    //fileChooser.setFileFilter(new FileFilterExtensions(ImageIO.getWriterFileSuffixes()));
+    //fileChooser.setFileFilter(new ImageFilter());
+    
     while (!done)
     {
       // get the file to save
-      System.out.println(ImageIO.getWriterFileSuffixes());
+      String[] writeFileSuffixes = ImageIO.getWriterFileSuffixes();
+      for (String s : writeFileSuffixes)
+      {
+        System.out.println(s);
+      }
+      //System.out.println(ImageIO.getWriterFileSuffixes());
       done = true;
-      /*
+      
       int fcResult = fileChooser.showSaveDialog(this);
       if (fcResult == JFileChooser.APPROVE_OPTION)
       {
@@ -251,11 +279,19 @@ public abstract class PlotFrame extends JFrame implements ActionListener
         // if it exists, confirm the overwrite 
         if (outfile.exists())
         {
-          
+          //JOptionPane.showConfirmDialog(this, message)
+        }
+        else
+        {
+          System.out.println("We could create it!");
+          System.out.println(outfile.getPath());
+          // get the filter now and attempt to 
+          fileChooser.getFileFilter();
         }
         
         //ImageIO.createImageOutputStream(outfile);
-      }*/
+      }
+      
     }
   }
   
@@ -276,6 +312,14 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     }
   }
   
+  protected void wireSaveButton()
+  {
+    if (saveImageButton != null)
+    {
+      saveImageButton.addActionListener(this);
+    }
+  }
+  
   protected void createButtonPanel(String startText, String stopText, String saveText)
   {
     startButton = new JButton(startText);
@@ -290,7 +334,7 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     
     wireStartButton();
     wireStopButton();
-    
+    wireSaveButton();
   }
   
   protected void createTitlePanel(String title)
