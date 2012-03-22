@@ -26,7 +26,16 @@ public class NodeTestGraphical
   static ArrayList<Point> gridPoints = new ArrayList<Point>();
   //static Vector<Node> allNodes = new Vector<Node>();>
   static ArrayList<Node> allNodes = new ArrayList<Node>();
+  static NodeListFrame nodeListFrame;
 
+  public static void createListFrame()
+  {
+    nodeListFrame = new NodeListFrame("NodeTestGraphical - NodeListFrame" , allNodes);
+    nodeListFrame.pack();
+    nodeListFrame.setVisible(true);
+    // TODO need something to be able to update the data!
+  }
+  
   public static void initialize()
   {
     // CREATE THE GRID
@@ -65,6 +74,8 @@ public class NodeTestGraphical
     allNodes.get(1).startGeneration(DataType.TYPEA);
     // seed the first node with an interest
     allNodes.get(0).startInterest(2, 10, DataType.TYPEA, currentTime);
+    
+    createListFrame();
   }
   
   public static void runSim()
