@@ -15,9 +15,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -263,35 +265,59 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     
     while (!done)
     {
-      // get the file to save
-      String[] writeFileSuffixes = ImageIO.getWriterFileSuffixes();
-      for (String s : writeFileSuffixes)
-      {
-        System.out.println(s);
-      }
-      //System.out.println(ImageIO.getWriterFileSuffixes());
-      done = true;
-      
       int fcResult = fileChooser.showSaveDialog(this);
       if (fcResult == JFileChooser.APPROVE_OPTION)
       {
         File outfile = fileChooser.getSelectedFile();
+        ImageFilter selectedFileType = null;
+        if (fileChooser.getFileFilter() == null)
+        {
+          // assume its the first one
+          selectedFileType = (ImageFilter) fileChooser.getChoosableFileFilters()[0];
+        }
+        else
+        {
+          selectedFileType = (ImageFilter) fileChooser.getFileFilter();
+        }
+        
+        String outputFileName = outfile.getPath();
+        String extension = ImageFilter.getExtension(outfile);
+        if (extension == null)
+        {
+          outputFileName += "." + selectedFileType.extensionToCheck;
+        }
+        
         // if it exists, confirm the overwrite 
         if (outfile.exists())
         {
-          //JOptionPane.showConfirmDialog(this, message)
+          int result = JOptionPane.showConfirmDialog(this, "Sorry, that file already exists! Try again?", "Save", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+          if (result != JOptionPane.YES_OPTION)
+          {
+            done = true;
+          }
         }
         else
         {
           System.out.println("We could create it!");
-          System.out.println(outfile.getPath());
-          // get the filter now and attempt to 
-          fileChooser.getFileFilter();
+          
+          
+          outfile = new File(outputFileName);
+          
+          try
+          {
+            ImageIO.write(imgToSave, selectedFileType.getExtensionToCheck(), outfile);
+            done = true;
+          } catch (IOException e1)
+          {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
         }
-        
-        //ImageIO.createImageOutputStream(outfile);
       }
-      
+      else
+      {
+        done = true;  // since the dialog was cancelled
+      }
     }
   }
   

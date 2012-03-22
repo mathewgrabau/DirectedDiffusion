@@ -63,9 +63,12 @@ public class ImageFilter extends FileFilter
       return name.substring(extStart + 1);
     }
     
-    
-    
     return null;
+  }
+  
+  public String getExtensionToCheck()
+  {
+    return extensionToCheck;
   }
 
   /* (non-Javadoc)
