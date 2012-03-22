@@ -1,15 +1,18 @@
 package dd;
 
 import dd.ui.NodeListFrame;
+import dd.ui.TimedNodeList;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.TimerTask;
 import java.util.Vector;
 import java.math.BigInteger;
 import java.sql.Date;
 
 import javax.swing.SwingUtilities;
+import java.util.Timer;
 
 /**
  * An adaptation of the simulation using the
@@ -26,14 +29,16 @@ public class NodeTestGraphical
   static ArrayList<Point> gridPoints = new ArrayList<Point>();
   //static Vector<Node> allNodes = new Vector<Node>();>
   static ArrayList<Node> allNodes = new ArrayList<Node>();
-  static NodeListFrame nodeListFrame;
+  //static NodeListFrame nodeListFrame;
+  static TimedNodeList nodeListFrame;
 
   public static void createListFrame()
   {
-    nodeListFrame = new NodeListFrame("NodeTestGraphical - NodeListFrame" , allNodes);
+    nodeListFrame = new TimedNodeList("NodeTestGraphical - NodeListFrame" , allNodes);
     nodeListFrame.pack();
     nodeListFrame.setVisible(true);
     // TODO need something to be able to update the data!
+    nodeListFrame.startUpdateTimer();
   }
   
   public static void initialize()
@@ -82,25 +87,28 @@ public class NodeTestGraphical
   {
     // RUN THE SIMULATION
     boolean keepgoing = true; // whether we are not done the simulation.
+    
+    
     while (keepgoing)
     {
-      for (Node nod : allNodes)
-      {
-        // Do all of the sending and receiving for each node.
-        nod.run(currentTime);
-      }
-
-      System.out.println("     | DONE ROUND: " + currentTime);
-
-      // Check if any nodes have work still to be done.
-      keepgoing = false;
-      for (Node nod : allNodes)
-      {
-        keepgoing = keepgoing || nod.isThereStillWorkToBeDone();
-      }
-
-      // increment time to the next time-stamp
-      currentTime++;
+        for (Node nod : allNodes)
+        {
+          // Do all of the sending and receiving for each node.
+          nod.run(currentTime);
+        }
+  
+        System.out.println("     | DONE ROUND: " + currentTime);
+  
+        // Check if any nodes have work still to be done.
+        keepgoing = false;
+        for (Node nod : allNodes)
+        {
+          keepgoing = keepgoing || nod.isThereStillWorkToBeDone();
+        }
+  
+        // increment time to the next time-stamp
+        currentTime++;
+      
       // uncomment the next two lines to limit the length of the simulation
       // if(currentTime == 5)
       // keepgoing = false;
