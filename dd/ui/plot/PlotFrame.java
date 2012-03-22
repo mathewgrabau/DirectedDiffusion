@@ -227,7 +227,10 @@ public abstract class PlotFrame extends JFrame implements ActionListener
   
   protected void wireStopButton()
   {
-    
+    if (stopButton != null)
+    {
+      stopButton.addActionListener(this);
+    }
   }
   
   protected void createButtonPanel(String startText, String stopText)
@@ -240,7 +243,8 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     buttonPanel.add(startButton);
     buttonPanel.add(stopButton);
     
-    
+    wireStartButton();
+    wireStopButton();
   }
   
   protected void createTitlePanel(String title)
