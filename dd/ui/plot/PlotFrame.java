@@ -12,9 +12,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Collection;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,8 +48,9 @@ public abstract class PlotFrame extends JFrame implements ActionListener
   
   static final int DEFAULT_LATENCY = 500;  // pulse for the latency
   protected long latency;    // the amount of latency that is set
-  private JButton startButton;
-  private JButton stopButton;
+  protected JButton startButton;
+  protected JButton stopButton;
+  protected JButton saveImageButton;  
   private JPanel buttonPanel;
   
   public PlotFrame(String title, Collection<Node> nodes)
@@ -148,7 +153,7 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     if (withButtons)
     {
       buttonPanel = new JPanel();
-      createButtonPanel("Start", "Stop");
+      createButtonPanel("Start", "Stop", "Save As Image");
       add(buttonPanel, BorderLayout.SOUTH);
     }  
     
@@ -162,6 +167,11 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     //add(plotPanel, BorderLayout.SOUTH);
   }
   
+  public BufferedImage takeSnapShot()
+  {
+    return chart.snapShot();
+  }
+  
   public void actionPerformed(ActionEvent e)
   {
     if (startButton != null && e.getSource() == startButton)
@@ -171,6 +181,10 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     else if (stopButton != null && e.getSource() == stopButton)
     {
       stopButtonClicked(e);
+    }
+    else if (saveImageButton != null && e.getSource() == saveImageButton)
+    {
+      saveButtonClicked(e);
     }
     
     // This component doesn't know how to handle it, 
@@ -216,6 +230,35 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     }
   }
   
+  protected void saveButtonClicked(ActionEvent e)
+  {
+    // want to capture the snapshot right when the button is clicked
+    BufferedImage imgToSave = takeSnapShot();
+   
+    boolean done = false;
+        
+    JFileChooser fileChooser = new JFileChooser();
+    while (!done)
+    {
+      // get the file to save
+      System.out.println(ImageIO.getWriterFileSuffixes());
+      done = true;
+      /*
+      int fcResult = fileChooser.showSaveDialog(this);
+      if (fcResult == JFileChooser.APPROVE_OPTION)
+      {
+        File outfile = fileChooser.getSelectedFile();
+        // if it exists, confirm the overwrite 
+        if (outfile.exists())
+        {
+          
+        }
+        
+        //ImageIO.createImageOutputStream(outfile);
+      }*/
+    }
+  }
+  
   // the two hooks that are 
   protected void wireStartButton()
   {
@@ -233,18 +276,21 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     }
   }
   
-  protected void createButtonPanel(String startText, String stopText)
+  protected void createButtonPanel(String startText, String stopText, String saveText)
   {
     startButton = new JButton(startText);
     stopButton = new JButton(stopText);
+    saveImageButton = new JButton(saveText);
     
     buttonPanel = new JPanel();
     
     buttonPanel.add(startButton);
     buttonPanel.add(stopButton);
+    buttonPanel.add(saveImageButton);
     
     wireStartButton();
     wireStopButton();
+    
   }
   
   protected void createTitlePanel(String title)
