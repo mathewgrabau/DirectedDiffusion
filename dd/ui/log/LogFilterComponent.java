@@ -94,7 +94,6 @@ public class LogFilterComponent extends JPanel implements ActionListener
   {
     // if all is enabled, then the log gets handled to the 
     Object v = comboSetting.getSelectedItem();
-    String s;
     FilterSetting setting;
     LogLevel level;
     if (v != null && v instanceof FilterSetting)

@@ -4,8 +4,6 @@
 package dd.ui.plot;
 
 import info.monitorenter.gui.chart.Chart2D;
-import info.monitorenter.gui.chart.ITrace2D;
-import info.monitorenter.gui.chart.io.FileFilterExtensions;
 import info.monitorenter.gui.chart.traces.Trace2DLtd;
 
 import java.awt.BorderLayout;
@@ -19,7 +17,6 @@ import java.io.IOException;
 import java.util.Collection;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageWriter;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -39,26 +36,27 @@ import dd.Node;
  * @author mgrabau
  *
  */
-public abstract class PlotFrame extends JFrame implements ActionListener
+public abstract class DynamicPlotFrame extends JFrame implements ActionListener
 {
   protected JPanel titlePanel;
   protected JPanel plotPanel;
   protected Chart2D chart;
-  protected NodeDataCollector collector;
+  protected DynamicNodeDataCollector collector;
   protected Trace2DLtd trace;
   
   protected JLabel titleLabel;
   protected boolean initialized;
   
-  static final int DEFAULT_LATENCY = 2;  // pulse for the latency
-  protected long latency;    // the amount of latency that is set
   protected JButton startButton;
   protected JButton stopButton;
   protected JButton saveImageButton;  
   protected JPanel buttonPanel;
   protected JButton exportCSVButton;
+
+  protected long latency;
+  static final int DEFAULT_LATENCY = 500; // update the window every 5 seconds. 
   
-  public PlotFrame(String title, Collection<Node> nodes)
+  public DynamicPlotFrame(String title, Collection<Node> nodes)
   {
     super(title);
     
@@ -66,7 +64,7 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     
   }
   
-  public PlotFrame(String title, Collection<Node> nodes, String plotTitle)
+  public DynamicPlotFrame(String title, Collection<Node> nodes, String plotTitle)
   {
     super(title);
     init(nodes, plotTitle, DEFAULT_LATENCY);
@@ -123,7 +121,7 @@ public abstract class PlotFrame extends JFrame implements ActionListener
    */
   protected void setCollector(Collection<Node> nodes)
   {
-    collector = new NodeDataCollector(trace, latency, nodes);
+    collector = new DynamicNodeDataCollector(trace, latency, nodes);
   }
   
   protected void init(Collection<Node> nodes, String plotTitle, long latency)

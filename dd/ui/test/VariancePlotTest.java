@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import dd.ui.plot.VariancePlot;
+import dd.ui.plot.DynamicVariancePlot;
 
 /**
  * Tests out the variance plots.
@@ -19,10 +19,10 @@ import dd.ui.plot.VariancePlot;
 public class VariancePlotTest
 {
   static int PLOT_LATENCY = 500;
-  static VariancePlot plot;
+  static DynamicVariancePlot plot;
   public static void createAndShowUI()
   {
-    plot = new VariancePlot("Variance Plot Test");
+    plot = new DynamicVariancePlot("Variance Plot Test");
     plot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     plot.pack();
     plot.setVisible(true);

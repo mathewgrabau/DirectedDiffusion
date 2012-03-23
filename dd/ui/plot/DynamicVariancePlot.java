@@ -4,14 +4,10 @@
 package dd.ui.plot;
 
 import info.monitorenter.gui.chart.Chart2D;
-import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DLtdReplacing;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.util.Collection;
-
-import javax.swing.JPanel;
 
 import dd.Node;
 
@@ -20,14 +16,14 @@ import dd.Node;
  * @author mgrabau
  *
  */
-public class VariancePlot extends PlotFrame
+public class DynamicVariancePlot extends DynamicPlotFrame
 {
-  public VariancePlot(String title)
+  public DynamicVariancePlot(String title)
   {
     super(title, null, "Variance Plot");
   }
   
-  public VariancePlot(String title, Collection<Node> nodes)
+  public DynamicVariancePlot(String title, Collection<Node> nodes)
   {
     super(title, nodes, "Variance Plot");
   }
@@ -71,6 +67,6 @@ public class VariancePlot extends PlotFrame
   {
    
     //super.setCollector(nodes);
-    collector = new NodeVarianceCollector(trace, this.latency, nodes);
+    collector = new DynamicNodeDataCollector(trace, this.latency, nodes);
   }
 }

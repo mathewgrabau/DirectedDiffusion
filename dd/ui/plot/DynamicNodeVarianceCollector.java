@@ -17,8 +17,10 @@ import dd.Node;
  *
  * Implements a collector that gathers the node energy data on pulses and
  * forwards it to the applicable item gathering point.
+ * 
+ * This particular variance collector is static, ie. must be told to collectData()
  */
-public class NodeVarianceCollector extends NodeDataCollector
+public class DynamicNodeVarianceCollector extends DynamicNodeDataCollector
 {
 
   /**
@@ -29,7 +31,7 @@ public class NodeVarianceCollector extends NodeDataCollector
    * @param latency
    * @param nodes
    */
-  public NodeVarianceCollector(ITrace2D trace, long latency,
+  public DynamicNodeVarianceCollector(ITrace2D trace, long latency, 
       Collection<Node> nodes)
   {
     super(trace, latency, nodes);
@@ -40,7 +42,7 @@ public class NodeVarianceCollector extends NodeDataCollector
    * @param trace
    * @param latency
    */
-  public NodeVarianceCollector(ITrace2D trace, long latency)
+  public DynamicNodeVarianceCollector(ITrace2D trace, long latency)
   {
     super(trace, latency);
   }

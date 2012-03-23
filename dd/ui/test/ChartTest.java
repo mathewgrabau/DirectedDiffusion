@@ -8,9 +8,7 @@ import java.util.Random;
 
 import info.monitorenter.gui.chart.*;
 import info.monitorenter.gui.chart.io.ADataCollector;
-import info.monitorenter.gui.chart.io.RandomDataCollectorOffset;
 import info.monitorenter.gui.chart.traces.Trace2DLtd;
-import info.monitorenter.gui.chart.traces.Trace2DSimple;
  
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -100,8 +98,7 @@ public class ChartTest
     });
     stopButton.setEnabled(false);
     
-    GridLayout gl;
-    JPanel p = new JPanel(gl = new GridLayout(1, 0));
+    JPanel p = new JPanel(new GridLayout(1, 0));
     //p.add(new JLabel("Here is some text"));
     p.add(startButton);
     p.add(stopButton);

@@ -4,7 +4,8 @@ import dd.ui.NodeListFrame;
 import dd.ui.SimulationFrameManager;
 import dd.ui.TimedNodeList;
 import dd.ui.log.LogFrame;
-import dd.ui.plot.VariancePlot;
+import dd.ui.plot.DynamicVariancePlot;
+import dd.ui.plot.StaticVariancePlot;
 
 import java.awt.Point;
 import java.awt.event.WindowAdapter;
@@ -38,7 +39,7 @@ public class NodeTestGraphical
   //static NodeListFrame nodeListFrame;
   static TimedNodeList nodeListFrame;
   static LogFrame logFrame;
-  static VariancePlot plotFrame;
+  static StaticVariancePlot plotFrame;
   static SimulationFrameManager frameManager;
   
   public static void createListFrame()
@@ -63,7 +64,7 @@ public class NodeTestGraphical
   
   public static void createPlotFrame()
   {
-    plotFrame = new VariancePlot("NodeTestGraphical - VariancePlot", allNodes);
+    plotFrame = new StaticVariancePlot("NodeTestGraphical - StaticVariancePlot", allNodes);
     plotFrame.pack();
     plotFrame.setVisible(true);
     
@@ -125,8 +126,6 @@ public class NodeTestGraphical
     // RUN THE SIMULATION
     boolean keepgoing = true; // whether we are not done the simulation.
     
-    plotFrame.startPlotter();
-    
     while (keepgoing)
     {
         for (Node nod : allNodes)
@@ -146,13 +145,14 @@ public class NodeTestGraphical
   
         // increment time to the next time-stamp
         currentTime++;
+        
+        plotFrame.takeSample();
       
       // uncomment the next two lines to limit the length of the simulation
       // if(currentTime == 5)
       // keepgoing = false;
     }
     
-    plotFrame.stopPlotter();
     logFrame.addMessage("Simulation is over");
     System.out.println("\n\n~* The Simulation Is Over *~\n");
     System.out.println("Node Energy Uses Are As Follows:");

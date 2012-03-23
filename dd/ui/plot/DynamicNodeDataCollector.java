@@ -24,7 +24,7 @@ import info.monitorenter.gui.chart.io.ADataCollector;
  * 
  * The default just returns the sum of all the nodes.
  */
-public class NodeDataCollector extends ADataCollector
+public class DynamicNodeDataCollector extends ADataCollector
 {
 	/**
 	 * This collection stores the references to the nodes that are monitored.
@@ -40,7 +40,7 @@ public class NodeDataCollector extends ADataCollector
 	 */
 	protected int currentPoint; 
 
-	public NodeDataCollector(ITrace2D trace, long latency, Collection<Node> nodes)
+	public DynamicNodeDataCollector(ITrace2D trace, long latency, Collection<Node> nodes)
 	{
 		super(trace, latency);
 		registeredNodes = new Vector<Node>();
@@ -48,7 +48,7 @@ public class NodeDataCollector extends ADataCollector
 		currentPoint = 0;
 	}
 	
-	public NodeDataCollector(ITrace2D trace, long latency)
+	public DynamicNodeDataCollector(ITrace2D trace, long latency)
 	{
 		super(trace, latency);
 		registeredNodes = new Vector<Node>();
