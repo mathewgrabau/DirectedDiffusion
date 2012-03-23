@@ -8,7 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import dd.Node;
-import dd.ui.NodeListFrame;
+import dd.ui.nodelist.NodeListFrame;
+
 import javax.swing.JFrame;
 
 /**

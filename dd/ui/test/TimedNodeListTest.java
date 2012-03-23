@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 
 
 import dd.Node;
-import dd.ui.TimedNodeList;
+import dd.ui.nodelist.TimedNodeList;
 
 /**
  * @author mgrabau

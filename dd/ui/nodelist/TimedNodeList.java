@@ -1,7 +1,7 @@
 /**
  * DirectedDiffusion
  */
-package dd.ui;
+package dd.ui.nodelist;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

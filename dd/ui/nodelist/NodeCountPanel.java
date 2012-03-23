@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dd.ui;
+package dd.ui.nodelist;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

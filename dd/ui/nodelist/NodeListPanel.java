@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dd.ui;
+package dd.ui.nodelist;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Vector;
 
 import dd.Node;
+import dd.ui.PointRenderer;
 
 /**
  * 

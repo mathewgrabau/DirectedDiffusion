@@ -1,9 +1,9 @@
 package dd;
 
-import dd.ui.NodeListFrame;
 import dd.ui.SimulationFrameManager;
-import dd.ui.TimedNodeList;
 import dd.ui.log.LogFrame;
+import dd.ui.nodelist.NodeListFrame;
+import dd.ui.nodelist.TimedNodeList;
 import dd.ui.plot.DynamicVariancePlot;
 import dd.ui.plot.StaticVariancePlot;
 

@@ -1,4 +1,4 @@
-package dd.ui;
+package dd.ui.nodelist;
 
 import javax.swing.table.AbstractTableModel;
 import dd.Node;
