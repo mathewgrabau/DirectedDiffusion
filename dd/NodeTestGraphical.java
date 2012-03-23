@@ -2,6 +2,8 @@ package dd;
 
 import dd.ui.NodeListFrame;
 import dd.ui.TimedNodeList;
+import dd.ui.log.LogFrame;
+import dd.ui.plot.VariancePlot;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -31,7 +33,9 @@ public class NodeTestGraphical
   static ArrayList<Node> allNodes = new ArrayList<Node>();
   //static NodeListFrame nodeListFrame;
   static TimedNodeList nodeListFrame;
-
+  static LogFrame logFrame;
+  static VariancePlot plotFrame;
+  
   public static void createListFrame()
   {
     nodeListFrame = new TimedNodeList("NodeTestGraphical - NodeListFrame" , allNodes);
@@ -40,6 +44,29 @@ public class NodeTestGraphical
     // TODO need something to be able to update the data!
     nodeListFrame.startUpdateTimer();
   }
+  
+  public static void createLogFrame()
+  {
+    logFrame = new LogFrame("NodeTestGraphical - LogFrame");
+    logFrame.pack();
+    logFrame.setVisible(true);
+    
+    // computer the new location for the window
+    Point p = new Point(nodeListFrame.getSize().width + 20, nodeListFrame.getY());
+    logFrame.setLocation(p);
+  }
+  
+  public static void createPlotFrame()
+  {
+    plotFrame = new VariancePlot("NodeTestGraphical - VariancePlot");
+    plotFrame.pack();
+    plotFrame.setVisible(true);
+    
+    Point p = new Point(nodeListFrame.getX(), nodeListFrame.getY() + nodeListFrame.getHeight());
+    plotFrame.setLocation(p);
+    
+  }
+      
   
   public static void initialize()
   {
@@ -81,6 +108,8 @@ public class NodeTestGraphical
     allNodes.get(0).startInterest(2, 10, DataType.TYPEA, currentTime);
     
     createListFrame();
+    createLogFrame();
+    createPlotFrame();
   }
   
   public static void runSim()
@@ -96,7 +125,7 @@ public class NodeTestGraphical
           // Do all of the sending and receiving for each node.
           nod.run(currentTime);
         }
-  
+        logFrame.addMessage("     | DONE ROUND: " + currentTime);
         System.out.println("     | DONE ROUND: " + currentTime);
   
         // Check if any nodes have work still to be done.
@@ -113,6 +142,7 @@ public class NodeTestGraphical
       // if(currentTime == 5)
       // keepgoing = false;
     }
+    logFrame.addMessage("Simulation is over");
     System.out.println("\n\n~* The Simulation Is Over *~\n");
     System.out.println("Node Energy Uses Are As Follows:");
     int energySum = 0;
@@ -121,7 +151,11 @@ public class NodeTestGraphical
       System.out.println("Node: " + allNodes.get(i).nodeID + "\tenergy: "
           + allNodes.get(i).nodeEnergyUsed);
       energySum += allNodes.get(i).nodeEnergyUsed;
+      
+      logFrame.addMessage("Node: " + allNodes.get(i).nodeID + "\tenergy: "
+          + allNodes.get(i).nodeEnergyUsed);
     }
+    logFrame.addMessage("Total Energy used: " + energySum);
     System.out.println("Total Energy Used: " + energySum);
     if (allNodes.get(0).myNeighbors.contains(allNodes.get(1)))
       System.out.println("Nodes 0 and 1 were right beside each other.");

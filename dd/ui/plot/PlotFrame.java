@@ -55,7 +55,8 @@ public abstract class PlotFrame extends JFrame implements ActionListener
   protected JButton startButton;
   protected JButton stopButton;
   protected JButton saveImageButton;  
-  private JPanel buttonPanel;
+  protected JPanel buttonPanel;
+  protected JButton exportCSVButton;
   
   public PlotFrame(String title, Collection<Node> nodes)
   {
@@ -298,16 +299,14 @@ public abstract class PlotFrame extends JFrame implements ActionListener
         }
         else
         {
-          System.out.println("We could create it!");
-          
-          
           outfile = new File(outputFileName);
           
           try
           {
             ImageIO.write(imgToSave, selectedFileType.getExtensionToCheck(), outfile);
             done = true;
-          } catch (IOException e1)
+          } 
+          catch (IOException e1)
           {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -321,7 +320,7 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     }
   }
   
-  // the two hooks that are 
+  // the hooks that are called when wiring the buttons (override if desirable).
   protected void wireStartButton()
   {
     if (startButton != null)
@@ -346,21 +345,42 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     }
   }
   
-  protected void createButtonPanel(String startText, String stopText, String saveText)
+  protected void wireExportButton()
   {
-    startButton = new JButton(startText);
-    stopButton = new JButton(stopText);
-    saveImageButton = new JButton(saveText);
-    
+    if (exportCSVButton != null)
+    {
+      exportCSVButton.addActionListener(this);
+    }
+  }
+  
+  protected void createButtonPanel(String startText, String stopText, String saveText, String exportText)
+  {
     buttonPanel = new JPanel();
     
-    buttonPanel.add(startButton);
-    buttonPanel.add(stopButton);
-    buttonPanel.add(saveImageButton);
-    
-    wireStartButton();
-    wireStopButton();
-    wireSaveButton();
+    if (startText != null)
+    {
+      startButton = new JButton(startText);
+      buttonPanel.add(startButton);
+      wireStartButton();
+    }
+    if (stopText != null)
+    {
+      stopButton = new JButton(stopText);
+      buttonPanel.add(stopButton);
+      wireStopButton();
+    }
+    if (saveText != null)
+    {
+      saveImageButton = new JButton(saveText);
+      buttonPanel.add(saveImageButton);
+      wireSaveButton();
+    }
+    if (exportText != null)
+    {
+      exportCSVButton = new JButton(exportText);
+      buttonPanel.add(exportCSVButton);
+      wireExportButton();
+    }
   }
   
   protected void createTitlePanel(String title)
