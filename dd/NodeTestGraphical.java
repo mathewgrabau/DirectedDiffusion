@@ -58,7 +58,7 @@ public class NodeTestGraphical
     logFrame.setVisible(true);
     
     // computer the new location for the window
-    Point p = new Point(nodeListFrame.getSize().width + 20, nodeListFrame.getY());
+    Point p = new Point(nodeListFrame.getX() + nodeListFrame.getSize().width + 20, nodeListFrame.getY());
     logFrame.setLocation(p);
   }
   
@@ -68,7 +68,7 @@ public class NodeTestGraphical
     plotFrame.pack();
     plotFrame.setVisible(true);
     
-    Point p = new Point(nodeListFrame.getX(), nodeListFrame.getY() + nodeListFrame.getHeight());
+    Point p = new Point(nodeListFrame.getX(), nodeListFrame.getY() + nodeListFrame.getHeight() + 10);
     plotFrame.setLocation(p);
   }
       
