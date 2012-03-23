@@ -4,9 +4,17 @@
 package dd.ui.plot;
 
 import info.monitorenter.gui.chart.Chart2D;
+import info.monitorenter.gui.chart.IAxis.AxisTitle;
 import info.monitorenter.gui.chart.ITrace2D;
+import info.monitorenter.gui.chart.axis.AAxis;
+import info.monitorenter.gui.chart.axis.AxisLinear;
+import info.monitorenter.gui.chart.axis.scalepolicy.AxisScalePolicyManualTicks;
+import info.monitorenter.gui.chart.rangepolicies.RangePolicyFixedViewport;
+import info.monitorenter.gui.chart.rangepolicies.RangePolicyForcedPoint;
+import info.monitorenter.gui.chart.rangepolicies.RangePolicyMinimumViewport;
 import info.monitorenter.gui.chart.traces.Trace2DLtdReplacing;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
+import info.monitorenter.util.Range;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -48,8 +56,23 @@ public class StaticVariancePlot extends StaticPlotFrame
     chart = new Chart2D();
     chart.addTrace(trace);
     
+    setXAxisTitle("Simulation Time");
+    setYAxisTitle("Variance");
+    
+    chart.getAxisY().setRangePolicy(new RangePolicyMinimumViewport(new Range(0, 0)));
+    
     //plotPanel.add(chart);
     add(chart, BorderLayout.CENTER);
+  }
+  
+  public void setXAxisTitle(String title)
+  {
+    chart.getAxisX().setAxisTitle(new AxisTitle(title));
+  }
+  
+  public void setYAxisTitle(String title)
+  {
+    chart.getAxisY().setAxisTitle(new AxisTitle(title));
   }
 
   /* (non-Javadoc)
@@ -63,6 +86,13 @@ public class StaticVariancePlot extends StaticPlotFrame
     
     chart = new Chart2D();
     chart.addTrace(trace);
+    chart.enablePointHighlighting(true);
+    
+    setXAxisTitle("Simulation Time");
+    setYAxisTitle("Variance");
+    
+    // change 
+    chart.getAxisY().setRangePolicy(new RangePolicyMinimumViewport(new Range(0, 0.1)));
     
     add(chart, BorderLayout.CENTER);
   }
