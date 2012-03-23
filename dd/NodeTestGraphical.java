@@ -146,6 +146,7 @@ public class NodeTestGraphical
         // increment time to the next time-stamp
         currentTime++;
         
+        // prompt for the plotting that is going to be taking place
         plotFrame.takeSample();
       
       // uncomment the next two lines to limit the length of the simulation

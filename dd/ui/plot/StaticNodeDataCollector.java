@@ -3,7 +3,11 @@
  */
 package dd.ui.plot;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 
 import dd.Node;
@@ -132,6 +136,42 @@ public class StaticNodeDataCollector extends info.monitorenter.gui.chart.io.ASta
     // Update the current point now, since that is a sample that has been taken
     updateCurrentPoint();
     m_trace.addPoint(currentPoint, sum);
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public Writer writeCSV()
+  {
+     Writer writer = new StringWriter();
+     
+     Iterator<ITracePoint2D> points = m_trace.iterator();
+     while (points.hasNext())
+     {
+       ITracePoint2D p = points.next();
+       try
+      {
+        writer.write(p.getX() + "," + p.getY());
+      } catch (IOException e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+       if (points.hasNext())
+       {
+         try
+        {
+          writer.write("\n");
+        } catch (IOException e)
+        {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+       }
+     }
+     
+     return writer;
   }
   
 }

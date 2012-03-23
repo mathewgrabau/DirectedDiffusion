@@ -4,9 +4,6 @@
 package dd.ui.plot;
 
 import info.monitorenter.gui.chart.Chart2D;
-import info.monitorenter.gui.chart.ITrace2D;
-import info.monitorenter.gui.chart.io.FileFilterExtensions;
-import info.monitorenter.gui.chart.traces.Trace2DLtd;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
 import java.awt.BorderLayout;
@@ -15,18 +12,21 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageWriter;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
 
 import dd.Node;
 
@@ -197,69 +197,124 @@ public abstract class StaticPlotFrame extends JFrame implements ActionListener
     
     fileChooser.setAcceptAllFileFilterUsed(false);
     
-    
-    //fileChooser.setFileFilter(new FileFilterExtensions(ImageIO.getWriterFileSuffixes()));
-    //fileChooser.setFileFilter(new ImageFilter());
-    
-    while (!done)
+    int fcResult = fileChooser.showSaveDialog(this);
+    if (fcResult == JFileChooser.APPROVE_OPTION)
     {
-      int fcResult = fileChooser.showSaveDialog(this);
-      if (fcResult == JFileChooser.APPROVE_OPTION)
+      File outfile = fileChooser.getSelectedFile();
+      String filename = outfile.getName();
+      String absFilename = outfile.getAbsolutePath();
+      
+      ImageFilter selectedFileType = null;
+      if (fileChooser.getFileFilter() == null)
       {
-        File outfile = fileChooser.getSelectedFile();
-        ImageFilter selectedFileType = null;
-        if (fileChooser.getFileFilter() == null)
+        // assume its the first one
+        selectedFileType = (ImageFilter) fileChooser.getChoosableFileFilters()[0];
+      } else
+      {
+        selectedFileType = (ImageFilter) fileChooser.getFileFilter();
+      }
+      
+      boolean hasExtension = filename.toLowerCase().endsWith("." + selectedFileType.extensionToCheck);
+      if (!hasExtension)
+      {
+        filename += "." + selectedFileType.extensionToCheck;
+        absFilename += "." + selectedFileType.extensionToCheck;
+      }
+      
+      // if it exists, confirm the overwrite
+      if (outfile.exists())
+      {
+        int result = JOptionPane.showConfirmDialog(this,
+            "File " + filename + " already exists!", "Save",
+            JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+        if (result != JOptionPane.YES_OPTION)
         {
-          // assume its the first one
-          selectedFileType = (ImageFilter) fileChooser.getChoosableFileFilters()[0];
-        }
-        else
-        {
-          selectedFileType = (ImageFilter) fileChooser.getFileFilter();
-        }
-        
-        String outputFileName = outfile.getPath();
-        String extension = ImageFilter.getExtension(outfile);
-        if (extension == null)
-        {
-          outputFileName += "." + selectedFileType.extensionToCheck;
-        }
-        
-        // if it exists, confirm the overwrite 
-        if (outfile.exists())
-        {
-          int result = JOptionPane.showConfirmDialog(this, "Sorry, that file already exists! Try again?", "Save", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
-          if (result != JOptionPane.YES_OPTION)
-          {
-            done = true;
-          }
-        }
-        else
-        {
-          outfile = new File(outputFileName);
-          
-          try
-          {
-            ImageIO.write(imgToSave, selectedFileType.getExtensionToCheck(), outfile);
-            done = true;
-          } 
-          catch (IOException e1)
-          {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-          }
+          return; 
         }
       }
       else
       {
-        done = true;  // since the dialog was cancelled
+        outfile = new File(absFilename);
+
+        try
+        {
+          ImageIO.write(imgToSave, selectedFileType.getExtensionToCheck(),
+              outfile);
+          done = true;
+        } catch (IOException e1)
+        {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
       }
-    }
+    } 
   }
     
   protected void exportCSVButtonClicked(ActionEvent e)
   {
-    // TODO implement this method
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setAcceptAllFileFilterUsed(false);
+    fileChooser.addChoosableFileFilter(new FileFilter() {
+      
+      @Override
+      public String getDescription()
+      {
+        return "CSV (*.csv)";
+      }
+      
+      @Override
+      public boolean accept(File f)
+      {
+        if (f.isDirectory())
+          return true;
+        
+        return f.getName().toLowerCase().endsWith(".csv");
+        
+      }
+    });
+    
+    int fcResult = fileChooser.showSaveDialog(this);
+    if (fcResult == JFileChooser.APPROVE_OPTION)
+    {
+      // Check for an existing file
+      File outfile = fileChooser.getSelectedFile();
+      String filename = outfile.getName();
+      String absFilename = outfile.getAbsolutePath();
+      boolean hasExtension = filename.toLowerCase().endsWith(".csv");
+      if (!hasExtension)
+      {
+        filename += ".csv";
+        absFilename += ".csv";
+      }
+      
+      outfile = new File(absFilename);
+      
+      if (outfile.exists())
+      {
+        int result = JOptionPane.showConfirmDialog(this,
+            "File " + filename + " already exists, overwrite?",
+            "Save Error",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.ERROR_MESSAGE);
+        if (result == JOptionPane.NO_OPTION)
+        {
+          return;
+        }
+      }
+      
+      try
+      {
+        FileWriter fw = new FileWriter(outfile, false);
+        fw.write(collector.writeCSV().toString());
+        fw.close();
+      } catch (IOException e1)
+      {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+      
+      
+    }
   }
   
   protected void wireSaveButton()

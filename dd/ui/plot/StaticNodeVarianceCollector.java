@@ -7,6 +7,7 @@ import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.ITracePoint2D;
 import info.monitorenter.gui.chart.TracePoint2D;
 
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Vector;
 
