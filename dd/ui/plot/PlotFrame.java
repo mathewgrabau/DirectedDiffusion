@@ -50,7 +50,7 @@ public abstract class PlotFrame extends JFrame implements ActionListener
   protected JLabel titleLabel;
   protected boolean initialized;
   
-  static final int DEFAULT_LATENCY = 500;  // pulse for the latency
+  static final int DEFAULT_LATENCY = 2;  // pulse for the latency
   protected long latency;    // the amount of latency that is set
   protected JButton startButton;
   protected JButton stopButton;
@@ -150,7 +150,6 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     else
     {
       addPlot(nodes);
-      
     }
     
     // TODO move this to a parameter instead
@@ -158,7 +157,7 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     if (withButtons)
     {
       buttonPanel = new JPanel();
-      createButtonPanel("Start", "Stop", "Save As Image");
+      createButtonPanel("Start", "Stop", "Save As Image", "Export as CSV");
       add(buttonPanel, BorderLayout.SOUTH);
     }  
     
@@ -210,6 +209,7 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     // TODO implement starting the trace/collector
     if (!collector.isRunning())
     {
+      System.out.println("We have started getting data?");
       collector.start();
       stopButton.setEnabled(true);
       startButton.setEnabled(false);
@@ -388,6 +388,17 @@ public abstract class PlotFrame extends JFrame implements ActionListener
     titlePanel = new JPanel(new GridLayout(1, 1));
     titleLabel = new JLabel("DirectedDiffusion Plot: " + title);
     titlePanel.add(titleLabel);
+  }
+  
+  // these methods are provided for outside control in the simulation environment.
+  public void startPlotter()
+  {
+    startButton.doClick();
+  }
+  
+  public void stopPlotter()
+  {
+    stopButton.doClick();
   }
   
   /**

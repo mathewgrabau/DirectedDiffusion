@@ -25,7 +25,12 @@ public class VariancePlot extends PlotFrame
   public VariancePlot(String title)
   {
     super(title, null, "Variance Plot");
-  } 
+  }
+  
+  public VariancePlot(String title, Collection<Node> nodes)
+  {
+    super(title, nodes, "Variance Plot");
+  }
 
   /* (non-Javadoc)
    * @see dd.ui.plot.PlotFrame#addPlot(java.util.Collection)

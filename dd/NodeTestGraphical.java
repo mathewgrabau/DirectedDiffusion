@@ -1,11 +1,14 @@
 package dd;
 
 import dd.ui.NodeListFrame;
+import dd.ui.SimulationFrameManager;
 import dd.ui.TimedNodeList;
 import dd.ui.log.LogFrame;
 import dd.ui.plot.VariancePlot;
 
 import java.awt.Point;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TimerTask;
@@ -13,6 +16,7 @@ import java.util.Vector;
 import java.math.BigInteger;
 import java.sql.Date;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import java.util.Timer;
 
@@ -35,6 +39,7 @@ public class NodeTestGraphical
   static TimedNodeList nodeListFrame;
   static LogFrame logFrame;
   static VariancePlot plotFrame;
+  static SimulationFrameManager frameManager;
   
   public static void createListFrame()
   {
@@ -58,13 +63,12 @@ public class NodeTestGraphical
   
   public static void createPlotFrame()
   {
-    plotFrame = new VariancePlot("NodeTestGraphical - VariancePlot");
+    plotFrame = new VariancePlot("NodeTestGraphical - VariancePlot", allNodes);
     plotFrame.pack();
     plotFrame.setVisible(true);
     
     Point p = new Point(nodeListFrame.getX(), nodeListFrame.getY() + nodeListFrame.getHeight());
     plotFrame.setLocation(p);
-    
   }
       
   
@@ -110,6 +114,10 @@ public class NodeTestGraphical
     createListFrame();
     createLogFrame();
     createPlotFrame();
+    
+    frameManager.registerFrame(nodeListFrame);
+    frameManager.registerFrame(logFrame);
+    frameManager.registerFrame(plotFrame);
   }
   
   public static void runSim()
@@ -117,6 +125,7 @@ public class NodeTestGraphical
     // RUN THE SIMULATION
     boolean keepgoing = true; // whether we are not done the simulation.
     
+    plotFrame.startPlotter();
     
     while (keepgoing)
     {
@@ -142,6 +151,8 @@ public class NodeTestGraphical
       // if(currentTime == 5)
       // keepgoing = false;
     }
+    
+    plotFrame.stopPlotter();
     logFrame.addMessage("Simulation is over");
     System.out.println("\n\n~* The Simulation Is Over *~\n");
     System.out.println("Node Energy Uses Are As Follows:");
@@ -163,10 +174,13 @@ public class NodeTestGraphical
 
   public static void main(String[] args)
   {
+    
+    
     SwingUtilities.invokeLater(new Runnable() {
 
       public void run()
       {
+        frameManager = new SimulationFrameManager();
         initialize();
         runSim();
       }
