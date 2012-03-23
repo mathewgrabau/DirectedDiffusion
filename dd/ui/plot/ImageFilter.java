@@ -39,8 +39,6 @@ public class ImageFilter extends FileFilter
       return true;
     
     String extension = getExtension(f);
-    System.out.println(extension);
-    System.out.println(extension != null && extension.equalsIgnoreCase(extensionToCheck));
     return (extension != null && extension.equalsIgnoreCase(extensionToCheck));
   }
   
